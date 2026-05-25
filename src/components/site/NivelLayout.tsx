@@ -14,8 +14,8 @@ type Props = {
 export function NivelLayout(p: Props) {
   return (
     <>
-      <section className="bg-hero py-16 text-primary-foreground">
-        <div className="container-tight">
+      <section className="page-header page-header--dark py-16 text-primary-foreground">
+        <div className="container-tight relative">
           <h1 className="font-display text-4xl font-bold md:text-5xl">{p.eyebrow}</h1>
           <p className="mt-4 max-w-2xl text-lg opacity-85 text-pretty">{p.title}</p>
         </div>
