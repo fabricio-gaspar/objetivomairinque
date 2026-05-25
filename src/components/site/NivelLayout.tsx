@@ -72,4 +72,3 @@ export function NivelLayout(p: Props) {
   );
 }
 
-export const route = createFileRoute;
