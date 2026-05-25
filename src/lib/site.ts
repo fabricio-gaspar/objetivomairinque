@@ -30,6 +30,7 @@ export const NAV: NavItem[] = [
       { label: "Educação Infantil", to: "/educacao-infantil" },
       { label: "Fundamental I", to: "/fundamental-1" },
       { label: "Fundamental II", to: "/fundamental-2" },
+      { label: "Integral", to: "/integral" },
     ],
   },
   { label: "Portal do Aluno", href: "https://portal.sponteeducacional.net.br/default.aspx?CID=54326", external: true },
