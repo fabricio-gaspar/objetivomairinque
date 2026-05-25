@@ -1,28 +1,39 @@
-## Mudanças
+## Objetivo
+Adicionar um fundo elegante e harmonioso (tema escola) atrás de todos os títulos, bandeirinha nos idiomas em "Sobre Nós" e detalhes sutis no layout.
 
-### 1. Menu deslocado para a direita (Header.tsx)
-- Ajustar o layout do `<nav>` no header para empurrar os links mais à direita, usando `ml-auto` no nav e adicionando espaçamento antes do botão "Agendar visita".
+## 1. Fundo elegante para títulos (global)
 
-### 2. Atualizar texto para "Matrículas abertas 2026" (index.tsx)
-- Trocar `"Matrículas abertas 2024"` por `"Matrículas abertas 2026"` na seção CTA.
-- Também atualizar a meta description que menciona "Matrículas abertas 2024".
+Atualizar o componente `src/components/site/SectionHeading.tsx` para incluir, atrás do título, um ornamento sutil tema escola:
 
-### 3. Redesenhar seção "NOSSA REALIZAÇÃO" no estilo da imagem (index.tsx)
-A imagem mostra: fundo azul sólido, título em dourado/bege, 4 cards brancos com:
-- Label em cinza no topo à esquerda (GRADUAÇÃO, PROFESSORES, SALAS DE AULA, ALUNOS)
-- Ícone azul no canto superior direito
-- Número grande em cinza escuro embaixo
+- Linha dourada horizontal fina à esquerda e direita do eyebrow (separadores tipo "régua acadêmica").
+- Ícone decorativo discreto (ex.: `BookOpen` ou pequeno losango/medalha em dourado) sobreposto ao fundo do título, com opacidade baixa, alinhado ao centro.
+- Texto do título com um leve gradiente do `--primary` para um tom mais claro, mantendo legibilidade.
+- Pequeno traço (underline) dourado animado abaixo do título centrado.
 
-Mudanças:
-- Adicionar números reais: GRADUAÇÃO 9572, PROFESSORES 20, SALAS DE AULA 15, ALUNOS 1624 (conforme imagem do site original).
-- Adicionar ícones do lucide-react: `GraduationCap`, `Paintbrush`, `Landmark`, `Users`.
-- Cards brancos com sombra, padding generoso, layout: label + ícone na mesma linha (justify-between), número grande abaixo.
-- Manter título "NOSSA REALIZAÇÃO" em dourado e subtítulo.
+Como o `SectionHeading` é usado em todas as páginas (Home, Sobre, Contato, níveis de ensino), uma única edição aplica o efeito em todos os títulos automaticamente.
 
-### 4. Corrigir enquadramento do Hero (index.tsx)
-- O slideshow usa `object-cover` que corta laterais. Para evitar corte, mudar para `object-contain` com fundo azul, OU manter `object-cover` mas ajustar `object-position` para `center` e aumentar a altura mínima para que menos seja cortado.
-- Melhor abordagem: manter `object-cover object-center` mas reduzir a constrição vertical — usar `aspect-[16/9]` ou altura adaptativa em vez de `h-[60vh]` fixo, para que a imagem caiba melhor em telas largas sem cortar tanto das laterais.
+Para títulos que NÃO usam `SectionHeading` (h2 internos como "Proposta Pedagógica", "Atividade Extracurricular", "Sobre Nós" no corpo), criar uma classe utilitária `.section-title` em `src/styles.css` com:
+- Pequeno traço dourado vertical à esquerda (border-left de 3px dourado).
+- Padding-left adequado.
+- Aplicar essa classe nos `<h2>` internos das páginas (sobre, contato, níveis).
+
+## 2. Bandeirinha nos idiomas (página Sobre)
+
+Na lista de atividades extracurriculares de `src/routes/sobre.tsx`, transformar os itens em objetos com label + emoji opcional:
+
+- "Espanhol" → 🇪🇸
+- Adicionar campos para outros itens? Só "Espanhol" é idioma na lista atual. Manter apenas a bandeira da Espanha ao lado de "Espanhol".
+
+Renderizar a bandeira (emoji) à esquerda do nome em um pequeno chip arredondado dentro do card.
+
+## 3. Detalhes elegantes no layout (página Sobre)
+
+- Card da imagem: adicionar uma moldura sutil (ring dourado de 1px com offset) e um pequeno selo decorativo "22 anos" no canto.
+- Seção "Proposta Pedagógica": fundo `bg-muted/40` ganha um ornamento sutil (linha dourada horizontal acima do título e um ícone `BookOpen` discreto).
+- Cards de atividades extracurriculares: ganham hover com elevação suave, ícone dourado à esquerda e transição.
+- Espaçamento vertical entre seções harmonizado.
 
 ## Arquivos afetados
-- `src/components/site/Header.tsx`
-- `src/routes/index.tsx`
+- `src/components/site/SectionHeading.tsx` — ornamento elegante no eyebrow/título.
+- `src/styles.css` — classe utilitária `.section-title` com traço dourado.
+- `src/routes/sobre.tsx` — bandeirinha em Espanhol, classe `.section-title` nos h2, polish nos cards e na imagem.
