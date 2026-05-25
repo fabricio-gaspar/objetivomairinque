@@ -29,7 +29,7 @@ export function Header() {
           </Link>
 
 
-          <nav className="hidden items-center gap-7 lg:flex">
+          <nav className="ml-auto hidden items-center gap-7 pr-6 lg:flex">
             {NAV.map((item) => {
               if ("children" in item) {
                 const active = item.children.some((c) => c.to === pathname);

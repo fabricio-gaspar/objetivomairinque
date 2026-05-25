@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight, MessageCircle, GraduationCap, Paintbrush, Landmark, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { wa } from "@/lib/site";
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Colégio Objetivo Mairinque" },
-      { name: "description", content: "Ensino de qualidade há mais de 20 anos. Educação Infantil, Fundamental I e Fundamental II em Mairinque-SP. Matrículas abertas 2024." },
+      { name: "description", content: "Ensino de qualidade há mais de 20 anos. Educação Infantil, Fundamental I e Fundamental II em Mairinque-SP. Matrículas abertas 2026." },
       { property: "og:title", content: "Colégio Objetivo Mairinque" },
       { property: "og:description", content: "Ensino de qualidade há mais de 20 anos em Mairinque-SP." },
       { property: "og:url", content: "/" },
@@ -50,10 +50,10 @@ const niveis = [
 ] as const;
 
 const stats = [
-  { l: "GRADUAÇÃO" },
-  { l: "PROFESSORES" },
-  { l: "SALAS DE AULA" },
-  { l: "ALUNOS" },
+  { l: "GRADUAÇÃO", n: "9572", Icon: GraduationCap },
+  { l: "PROFESSORES", n: "20", Icon: Paintbrush },
+  { l: "SALAS DE AULA", n: "15", Icon: Landmark },
+  { l: "ALUNOS", n: "1624", Icon: Users },
 ];
 
 function Home() {
