@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowRight, MessageCircle, GraduationCap, Paintbrush, Landmark, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { wa } from "@/lib/site";
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Colégio Objetivo Mairinque" },
-      { name: "description", content: "Ensino de qualidade há mais de 20 anos. Educação Infantil, Fundamental I e Fundamental II em Mairinque-SP. Matrículas abertas 2024." },
+      { name: "description", content: "Ensino de qualidade há mais de 20 anos. Educação Infantil, Fundamental I e Fundamental II em Mairinque-SP. Matrículas abertas 2026." },
       { property: "og:title", content: "Colégio Objetivo Mairinque" },
       { property: "og:description", content: "Ensino de qualidade há mais de 20 anos em Mairinque-SP." },
       { property: "og:url", content: "/" },
@@ -50,10 +50,10 @@ const niveis = [
 ] as const;
 
 const stats = [
-  { l: "GRADUAÇÃO" },
-  { l: "PROFESSORES" },
-  { l: "SALAS DE AULA" },
-  { l: "ALUNOS" },
+  { l: "GRADUAÇÃO", n: "9572", Icon: GraduationCap },
+  { l: "PROFESSORES", n: "20", Icon: Paintbrush },
+  { l: "SALAS DE AULA", n: "15", Icon: Landmark },
+  { l: "ALUNOS", n: "1624", Icon: Users },
 ];
 
 function Home() {
@@ -66,26 +66,29 @@ function Home() {
   return (
     <>
       {/* SLIDESHOW */}
-      <section className="relative h-[60vh] min-h-[420px] w-full overflow-hidden bg-primary">
-        {slides.map((src, idx) => (
-          <img
-            key={src}
-            src={src}
-            alt=""
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${idx === i ? "opacity-100" : "opacity-0"}`}
-          />
-        ))}
-        <div className="absolute inset-x-0 bottom-6 flex justify-center gap-2">
-          {slides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setI(idx)}
-              aria-label={`Slide ${idx + 1}`}
-              className={`h-2 rounded-full transition-all ${idx === i ? "w-8 bg-white" : "w-2 bg-white/50"}`}
+      <section className="relative w-full overflow-hidden bg-primary">
+        <div className="relative aspect-[21/9] max-h-[640px] min-h-[320px] w-full">
+          {slides.map((src, idx) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-1000 ${idx === i ? "opacity-100" : "opacity-0"}`}
             />
           ))}
+          <div className="absolute inset-x-0 bottom-6 flex justify-center gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setI(idx)}
+                aria-label={`Slide ${idx + 1}`}
+                className={`h-2 rounded-full transition-all ${idx === i ? "w-8 bg-white" : "w-2 bg-white/50"}`}
+              />
+            ))}
+          </div>
         </div>
       </section>
+
 
       {/* NÍVEIS DE ENSINO */}
       <section className="container-tight py-20">
@@ -110,13 +113,16 @@ function Home() {
       {/* NOSSA REALIZAÇÃO */}
       <section className="bg-hero py-20 text-primary-foreground">
         <div className="container-tight text-center">
-          <h2 className="font-display text-3xl font-bold md:text-4xl">NOSSA REALIZAÇÃO</h2>
+          <h2 className="font-display text-3xl font-bold text-[var(--gold)] md:text-4xl">NOSSA REALIZAÇÃO</h2>
           <p className="mt-3 text-base opacity-85">Ensino de qualidade há mais de 20 anos</p>
-          <div className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.l}>
-                <div className="font-display text-5xl font-bold text-[var(--gold)]">+</div>
-                <div className="mt-2 text-xs font-semibold uppercase tracking-wider opacity-85">{s.l}</div>
+          <div className="mt-12 grid grid-cols-2 gap-5 md:grid-cols-4">
+            {stats.map(({ l, n, Icon }) => (
+              <div key={l} className="rounded-xl bg-white p-7 text-left shadow-soft">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium tracking-wide text-foreground/70">{l}</span>
+                  <Icon className="h-7 w-7 text-primary" />
+                </div>
+                <div className="mt-6 text-4xl font-light text-foreground md:text-5xl">{n}</div>
               </div>
             ))}
           </div>
@@ -125,7 +131,8 @@ function Home() {
 
       {/* CTA MATRÍCULAS */}
       <section className="container-tight py-20 text-center">
-        <SectionHeading eyebrow="Faça parte deste time!" title="Matrículas abertas 2024" />
+        <SectionHeading eyebrow="Faça parte deste time!" title="Matrículas abertas 2026" />
+
         <div className="mt-8">
           <Button asChild size="lg" className="bg-[var(--gold)] text-primary hover:bg-[var(--gold)]/90">
             <a href={wa("Olá! Gostaria de mais informações sobre matrículas.")} target="_blank" rel="noopener noreferrer">
