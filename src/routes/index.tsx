@@ -67,7 +67,8 @@ function Home() {
     <>
       {/* SLIDESHOW */}
       <section className="relative w-full overflow-hidden bg-primary">
-        <div className="relative aspect-[21/9] max-h-[640px] min-h-[320px] w-full">
+        <div className="relative w-full">
+          <img src={slides[0]} alt="" className="block h-auto w-full opacity-0" aria-hidden="true" />
           {slides.map((src, idx) => (
             <img
               key={src}
