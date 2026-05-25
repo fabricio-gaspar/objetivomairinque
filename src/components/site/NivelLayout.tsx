@@ -1,5 +1,6 @@
 import { MessageCircle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { SectionHeading } from "@/components/site/SectionHeading";
 import { wa } from "@/lib/site";
 
 type Props = {
@@ -14,10 +15,10 @@ type Props = {
 export function NivelLayout(p: Props) {
   return (
     <>
-      <section className="bg-hero py-16 text-primary-foreground">
-        <div className="container-tight">
-          <h1 className="font-display text-4xl font-bold md:text-5xl">{p.eyebrow}</h1>
-          <p className="mt-4 max-w-2xl text-lg opacity-85 text-pretty">{p.title}</p>
+      <section className="relative overflow-hidden bg-muted/40 py-16">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--gold)_0%,_transparent_55%)] opacity-[0.07]" />
+        <div className="container-tight relative text-center">
+          <SectionHeading eyebrow={p.eyebrow} title={p.title} />
         </div>
       </section>
 
@@ -25,12 +26,12 @@ export function NivelLayout(p: Props) {
         <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
           <img src={p.image} alt={p.eyebrow} className="w-full rounded-2xl shadow-elegant" />
           <div>
-            <h2 className="font-display text-2xl font-bold uppercase tracking-wide text-primary">{p.eyebrow}</h2>
+            <h2 className="section-title font-display text-2xl font-bold text-primary">{p.eyebrow}</h2>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-foreground/85 text-pretty">
               {p.paragraphs.map((par, i) => <p key={i}>{par}</p>)}
             </div>
 
-            <h3 className="mt-10 font-display text-lg font-semibold uppercase tracking-wide text-primary">Atividades</h3>
+            <h3 className="section-title mt-10 font-display text-lg font-semibold text-primary">Atividades</h3>
             <ul className="mt-5 space-y-3">
               {p.atividades.map((a) => (
                 <li key={a} className="flex items-center gap-3 text-base">
