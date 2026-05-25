@@ -123,6 +123,8 @@
   .nav-link[data-active="true"]::after {
     transform: scaleX(1);
     transform-origin: left center;
+  }
+
   .section-title {
     position: relative;
     padding-left: 1rem;
