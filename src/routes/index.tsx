@@ -117,12 +117,13 @@ function Home() {
           <p className="mt-3 text-base opacity-85">Ensino de qualidade há mais de 20 anos</p>
           <div className="mt-12 grid grid-cols-2 gap-5 md:grid-cols-4">
             {stats.map(({ l, n, Icon }) => (
-              <div key={l} className="rounded-xl bg-white p-7 text-left shadow-soft">
+              <div key={l} className="group relative overflow-hidden rounded-2xl bg-white p-7 text-left shadow-soft ring-1 ring-white/40 transition-all duration-500 hover:-translate-y-1 hover:shadow-elegant">
+                <div className="absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-[var(--gold)] transition-transform duration-500 group-hover:scale-x-100" />
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium tracking-wide text-foreground/70">{l}</span>
-                  <Icon className="h-7 w-7 text-primary" />
+                  <Icon className="h-7 w-7 text-primary transition-transform duration-500 group-hover:scale-110" />
                 </div>
-                <div className="mt-6 text-4xl font-light text-foreground md:text-5xl">{n}</div>
+                <div className="mt-6 font-display text-4xl font-light text-foreground md:text-5xl">{n}</div>
               </div>
             ))}
           </div>
