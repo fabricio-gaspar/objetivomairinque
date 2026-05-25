@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight, MessageCircle, GraduationCap, Paintbrush, Landmark, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/site/SectionHeading";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { wa } from "@/lib/site";
 import slide1 from "@/assets/slide-1.jpg";
 import slide2 from "@/assets/slide-2.jpg";
@@ -11,6 +13,7 @@ import slide4 from "@/assets/slide-4.jpg";
 import infantilImg from "@/assets/infantil.jpg";
 import fund1Img from "@/assets/fund1.jpg";
 import fund2Img from "@/assets/fund2.jpg";
+import integralImg from "@/assets/integral.jpg";
 
 export const Route = createFileRoute("/")({
   component: Home,
