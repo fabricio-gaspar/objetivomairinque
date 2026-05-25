@@ -36,16 +36,17 @@ export function Header() {
                 return (
                   <div key={item.label} className="group relative">
                     <button
-                      className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
+                      data-active={active}
+                      className={`nav-link inline-flex items-center gap-1 text-sm font-medium transition-colors ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
                     >
-                      {item.label} <ChevronDown className="h-3.5 w-3.5" />
+                      {item.label} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
                     </button>
-                    <div className="invisible absolute left-1/2 top-full z-50 mt-2 w-56 -translate-x-1/2 rounded-xl border border-border bg-background p-2 opacity-0 shadow-elegant transition-all group-hover:visible group-hover:opacity-100">
+                    <div className="invisible absolute left-1/2 top-full z-50 mt-3 w-56 -translate-x-1/2 translate-y-1 rounded-xl border border-border bg-background/95 p-2 opacity-0 shadow-elegant backdrop-blur-md transition-all duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                       {item.children.map((c) => (
                         <Link
                           key={c.to}
                           to={c.to}
-                          className="block rounded-lg px-3 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary"
+                          className="block rounded-lg px-3 py-2 text-sm text-foreground/80 transition-colors hover:bg-muted hover:text-primary"
                         >
                           {c.label}
                         </Link>
@@ -61,7 +62,7 @@ export function Header() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
+                    className="nav-link text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
                   >
                     {item.label}
                   </a>
@@ -72,7 +73,8 @@ export function Header() {
                 <Link
                   key={item.to}
                   to={item.to}
-                  className={`text-sm font-medium transition-colors ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
+                  data-active={active}
+                  className={`nav-link text-sm font-medium transition-colors ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
                 >
                   {item.label}
                 </Link>
@@ -80,7 +82,7 @@ export function Header() {
             })}
           </nav>
 
-          <Button asChild className="hidden lg:inline-flex" size="sm">
+          <Button asChild className="hidden bg-[var(--gold)] text-primary shadow-soft transition-all hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-elegant lg:inline-flex" size="sm">
             <a href={wa("Olá! Gostaria de agendar uma visita ao colégio.")} target="_blank" rel="noopener noreferrer">
               Agendar visita
             </a>
