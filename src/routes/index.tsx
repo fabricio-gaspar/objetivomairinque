@@ -50,6 +50,12 @@ const niveis = [
     title: "FUNDAMENTAL II",
     text: "No Ensino Fundamental II surgem novas questões que exigem soluções mais complexas. É preciso inteligência para discriminar a importância das questões essenciais. Liderança para enfrentá-las.",
   },
+  {
+    to: "/integral",
+    img: integralImg,
+    title: "INTEGRAL",
+    text: "Atendimento especial e diferenciado para as famílias que precisam deixar seus filhos em período integral ou parte do dia em local seguro e confiável.",
+  },
 ] as const;
 
 const stats = [
