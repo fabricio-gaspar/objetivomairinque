@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as IntegralRouteImport } from './routes/integral'
 import { Route as Fundamental2RouteImport } from './routes/fundamental-2'
 import { Route as Fundamental1RouteImport } from './routes/fundamental-1'
 import { Route as EducacaoInfantilRouteImport } from './routes/educacao-infantil'
@@ -19,6 +20,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntegralRoute = IntegralRouteImport.update({
+  id: '/integral',
+  path: '/integral',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Fundamental2Route = Fundamental2RouteImport.update({
@@ -53,6 +59,7 @@ export interface FileRoutesByFullPath {
   '/educacao-infantil': typeof EducacaoInfantilRoute
   '/fundamental-1': typeof Fundamental1Route
   '/fundamental-2': typeof Fundamental2Route
+  '/integral': typeof IntegralRoute
   '/sobre': typeof SobreRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/educacao-infantil': typeof EducacaoInfantilRoute
   '/fundamental-1': typeof Fundamental1Route
   '/fundamental-2': typeof Fundamental2Route
+  '/integral': typeof IntegralRoute
   '/sobre': typeof SobreRoute
 }
 export interface FileRoutesById {
@@ -70,6 +78,7 @@ export interface FileRoutesById {
   '/educacao-infantil': typeof EducacaoInfantilRoute
   '/fundamental-1': typeof Fundamental1Route
   '/fundamental-2': typeof Fundamental2Route
+  '/integral': typeof IntegralRoute
   '/sobre': typeof SobreRoute
 }
 export interface FileRouteTypes {
@@ -80,6 +89,7 @@ export interface FileRouteTypes {
     | '/educacao-infantil'
     | '/fundamental-1'
     | '/fundamental-2'
+    | '/integral'
     | '/sobre'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -88,6 +98,7 @@ export interface FileRouteTypes {
     | '/educacao-infantil'
     | '/fundamental-1'
     | '/fundamental-2'
+    | '/integral'
     | '/sobre'
   id:
     | '__root__'
@@ -96,6 +107,7 @@ export interface FileRouteTypes {
     | '/educacao-infantil'
     | '/fundamental-1'
     | '/fundamental-2'
+    | '/integral'
     | '/sobre'
   fileRoutesById: FileRoutesById
 }
@@ -105,6 +117,7 @@ export interface RootRouteChildren {
   EducacaoInfantilRoute: typeof EducacaoInfantilRoute
   Fundamental1Route: typeof Fundamental1Route
   Fundamental2Route: typeof Fundamental2Route
+  IntegralRoute: typeof IntegralRoute
   SobreRoute: typeof SobreRoute
 }
 
@@ -115,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/integral': {
+      id: '/integral'
+      path: '/integral'
+      fullPath: '/integral'
+      preLoaderRoute: typeof IntegralRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fundamental-2': {
@@ -161,6 +181,7 @@ const rootRouteChildren: RootRouteChildren = {
   EducacaoInfantilRoute: EducacaoInfantilRoute,
   Fundamental1Route: Fundamental1Route,
   Fundamental2Route: Fundamental2Route,
+  IntegralRoute: IntegralRoute,
   SobreRoute: SobreRoute,
 }
 export const routeTree = rootRouteImport
