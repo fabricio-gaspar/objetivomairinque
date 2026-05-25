@@ -14,9 +14,7 @@ export const wa = (message: string) =>
 
 export const NAV = [
   { label: "Início", to: "/" },
-  { label: "Sobre", to: "/sobre" },
   { label: "Educação Infantil", to: "/educacao-infantil" },
   { label: "Fundamental I", to: "/fundamental-1" },
   { label: "Fundamental II", to: "/fundamental-2" },
-  { label: "Contato", to: "/contato" },
 ] as const;
