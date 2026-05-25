@@ -126,10 +126,62 @@
     padding-left: 1rem;
     border-left: 3px solid var(--gold);
     line-height: 1.1;
+  }
+
+  .page-header {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--muted);
+    background-image:
+      radial-gradient(ellipse 60% 70% at 0% 0%, color-mix(in oklab, var(--primary) 14%, transparent) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 70% at 100% 0%, color-mix(in oklab, var(--gold) 18%, transparent) 0%, transparent 60%),
+      linear-gradient(180deg, var(--muted) 0%, var(--background) 100%);
+    border-top: 1px solid color-mix(in oklab, var(--gold) 30%, transparent);
+    border-bottom: 1px solid color-mix(in oklab, var(--gold) 30%, transparent);
+  }
+  .page-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><path d='M40 0H0V40' fill='none' stroke='%23c9a84c' stroke-width='0.5'/></svg>");
+    background-size: 40px 40px;
+    opacity: 0.22;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+    z-index: -1;
+  }
+  .page-header::after {
+    content: "";
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 220px;
+    height: 220px;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c9a84c' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/></svg>");
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.08;
+    z-index: -1;
+  }
+  @media (max-width: 768px) {
+    .page-header::after { display: none; }
+  }
+
+  .page-header--dark {
+    background-color: transparent;
+    background-image: var(--gradient-hero);
+    border-top-color: color-mix(in oklab, var(--gold) 40%, transparent);
+    border-bottom-color: color-mix(in oklab, var(--gold) 40%, transparent);
+  }
+  .page-header--dark::before { opacity: 0.12; }
+  .page-header--dark::after { opacity: 0.1; }
 }
 
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
-}
 }
