@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
 import { ArrowRight, MessageCircle, GraduationCap, Paintbrush, Landmark, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/site/SectionHeading";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { wa } from "@/lib/site";
 import slide1 from "@/assets/slide-1.jpg";
 import slide2 from "@/assets/slide-2.jpg";
@@ -11,6 +13,7 @@ import slide4 from "@/assets/slide-4.jpg";
 import infantilImg from "@/assets/infantil.jpg";
 import fund1Img from "@/assets/fund1.jpg";
 import fund2Img from "@/assets/fund2.jpg";
+import integralImg from "@/assets/integral.jpg";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -47,6 +50,12 @@ const niveis = [
     title: "FUNDAMENTAL II",
     text: "No Ensino Fundamental II surgem novas questões que exigem soluções mais complexas. É preciso inteligência para discriminar a importância das questões essenciais. Liderança para enfrentá-las.",
   },
+  {
+    to: "/integral",
+    img: integralImg,
+    title: "INTEGRAL",
+    text: "Atendimento especial e diferenciado para as famílias que precisam deixar seus filhos em período integral ou parte do dia em local seguro e confiável.",
+  },
 ] as const;
 
 const stats = [
@@ -58,6 +67,7 @@ const stats = [
 
 function Home() {
   const [i, setI] = useState(0);
+  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
   useEffect(() => {
     const t = setInterval(() => setI((v) => (v + 1) % slides.length), 5000);
     return () => clearInterval(t);
@@ -93,23 +103,39 @@ function Home() {
 
       {/* NÍVEIS DE ENSINO */}
       <section className="container-tight py-20">
-        <div className="grid gap-8 md:grid-cols-3">
-          {niveis.map((n) => (
-            <article key={n.to} className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all hover:-translate-y-1 hover:shadow-elegant">
-              <div className="overflow-hidden">
-                <img src={n.img} alt={n.title} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-              </div>
-              <div className="flex flex-1 flex-col p-7">
-                <h2 className="font-display text-lg font-bold tracking-wide text-primary">{n.title}</h2>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{n.text}</p>
-                <Link to={n.to} className="mt-5 inline-flex items-center text-sm font-semibold text-primary transition-all group-hover:gap-2">
-                  Saiba Mais <ArrowRight className="ml-1 h-4 w-4" />
-                </Link>
-              </div>
-            </article>
-          ))}
-        </div>
+        <Carousel
+          opts={{ align: "start", loop: true }}
+          plugins={[autoplay.current]}
+          className="mx-auto w-full max-w-6xl px-12"
+        >
+          <CarouselContent className="-ml-6">
+            {niveis.map((n) => (
+              <CarouselItem key={n.to} className="pl-6 md:basis-1/2 lg:basis-1/3">
+                <div className="flex flex-col">
+                  <h2 className="mb-4 text-center font-display text-xl font-bold tracking-wide text-[var(--gold)]">
+                    {n.title}
+                  </h2>
+                  <article className="group flex flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all hover:-translate-y-1 hover:shadow-elegant">
+                    <div className="overflow-hidden">
+                      <img src={n.img} alt={n.title} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    </div>
+                    <div className="flex flex-1 flex-col p-7">
+                      <h3 className="font-display text-lg font-bold tracking-wide text-primary">{n.title}</h3>
+                      <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{n.text}</p>
+                      <Link to={n.to} className="mt-5 inline-flex items-center text-sm font-semibold text-primary transition-all group-hover:gap-2">
+                        Saiba Mais <ArrowRight className="ml-1 h-4 w-4" />
+                      </Link>
+                    </div>
+                  </article>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-0" />
+          <CarouselNext className="right-0" />
+        </Carousel>
       </section>
+
 
       {/* NOSSA REALIZAÇÃO */}
       <section className="bg-hero py-20 text-primary-foreground">
