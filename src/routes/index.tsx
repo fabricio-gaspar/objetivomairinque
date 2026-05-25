@@ -112,7 +112,8 @@ function Home() {
             {niveis.map((n) => (
               <CarouselItem key={n.to} className="pl-6 md:basis-1/2 lg:basis-1/3">
                 <div className="flex flex-col">
-                  <h2 className="mb-4 text-center font-display text-xl font-bold tracking-wide text-[var(--gold)]">
+                  <h2 className="mb-4 flex items-center gap-3 font-display text-base font-semibold tracking-wide text-foreground">
+                    <span className="h-5 w-1 bg-primary" />
                     {n.title}
                   </h2>
                   <article className="group flex flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all hover:-translate-y-1 hover:shadow-elegant">
