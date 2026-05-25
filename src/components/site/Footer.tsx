@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Send, Facebook, Instagram, Youtube } from "lucide-
 import { SITE } from "@/lib/site";
 import logo from "@/assets/logo.png";
 
-const BLUE = "#3b82f6";
+const BLUE = "#1e40af";
 
 export function Footer() {
   return (
