@@ -113,18 +113,26 @@ function Home() {
       {/* NOSSA REALIZAÇÃO */}
       <section className="bg-hero py-20 text-primary-foreground">
         <div className="container-tight text-center">
-          <h2 className="font-display text-3xl font-bold md:text-4xl">NOSSA REALIZAÇÃO</h2>
+          <h2 className="font-display text-3xl font-bold text-[var(--gold)] md:text-4xl">NOSSA REALIZAÇÃO</h2>
           <p className="mt-3 text-base opacity-85">Ensino de qualidade há mais de 20 anos</p>
-          <div className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4">
-            {stats.map((s) => (
-              <div key={s.l}>
-                <div className="font-display text-5xl font-bold text-[var(--gold)]">+</div>
-                <div className="mt-2 text-xs font-semibold uppercase tracking-wider opacity-85">{s.l}</div>
+          <div className="mt-12 grid grid-cols-2 gap-5 md:grid-cols-4">
+            {stats.map(({ l, n, Icon }) => (
+              <div key={l} className="rounded-xl bg-white p-7 text-left shadow-soft">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium tracking-wide text-foreground/70">{l}</span>
+                  <Icon className="h-7 w-7 text-primary" />
+                </div>
+                <div className="mt-6 text-4xl font-light text-foreground md:text-5xl">{n}</div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* CTA MATRÍCULAS */}
+      <section className="container-tight py-20 text-center">
+        <SectionHeading eyebrow="Faça parte deste time!" title="Matrículas abertas 2026" />
+
 
       {/* CTA MATRÍCULAS */}
       <section className="container-tight py-20 text-center">
