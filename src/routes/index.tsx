@@ -105,7 +105,7 @@ function Home() {
       <section className="container-tight py-20">
         <Carousel
           opts={{ align: "start", loop: true }}
-          plugins={[autoplay.current]}
+          plugins={autoplay.current ? [autoplay.current] : []}
           className="mx-auto w-full max-w-6xl px-12"
         >
           <CarouselContent className="-ml-6">
