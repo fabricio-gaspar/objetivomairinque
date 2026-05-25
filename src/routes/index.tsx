@@ -133,10 +133,6 @@ function Home() {
       <section className="container-tight py-20 text-center">
         <SectionHeading eyebrow="Faça parte deste time!" title="Matrículas abertas 2026" />
 
-
-      {/* CTA MATRÍCULAS */}
-      <section className="container-tight py-20 text-center">
-        <SectionHeading eyebrow="Faça parte deste time!" title="Matrículas abertas 2024" />
         <div className="mt-8">
           <Button asChild size="lg" className="bg-[var(--gold)] text-primary hover:bg-[var(--gold)]/90">
             <a href={wa("Olá! Gostaria de mais informações sobre matrículas.")} target="_blank" rel="noopener noreferrer">
