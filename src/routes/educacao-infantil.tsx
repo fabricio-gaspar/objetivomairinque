@@ -7,11 +7,9 @@ export const Route = createFileRoute("/educacao-infantil")({
   head: () => ({
     meta: [
       { title: "Educação Infantil — Colégio Objetivo Mairinque" },
-      { name: "description", content: "Educação Infantil (0 a 5 anos) no Colégio Objetivo Mairinque: ambiente acolhedor, desenvolvimento integral e atenção individual." },
+      { name: "description", content: "Ensino moderno para o seu filho crescer feliz e brincando. Educação Infantil no Colégio Objetivo Mairinque." },
       { property: "og:title", content: "Educação Infantil — Objetivo Mairinque" },
-      { property: "og:description", content: "Acolhimento, brincadeira e aprendizagem nos primeiros anos de vida." },
       { property: "og:url", content: "/educacao-infantil" },
-      { property: "og:image", content: "/src/assets/infantil.jpg" },
     ],
     links: [{ rel: "canonical", href: "/educacao-infantil" }],
   }),
@@ -21,24 +19,13 @@ function Page() {
   return (
     <NivelLayout
       eyebrow="Educação Infantil"
-      title="Os primeiros passos da formação."
-      age="0 a 5 anos"
+      title="Ensino moderno para o seu filho crescer feliz e brincando"
       image={infantilImg}
-      intro="O período de 0 a 5 anos é o mais importante na formação da criança. Aqui, ela constrói os principais recursos para lidar com o mundo, com os outros e consigo mesma."
       paragraphs={[
-        "Na Educação Infantil do Objetivo Mairinque, cada criança encontra um ambiente acolhedor, planejado para estimular a curiosidade, a autonomia e a linguagem nas fases mais decisivas do desenvolvimento.",
-        "Nossa proposta une brincadeira, rotina estruturada e mediação atenta dos educadores para que o aprendizado aconteça de forma natural, respeitando o ritmo individual de cada aluno.",
-        "Valorizamos a parceria com a família — porque essa fase exige diálogo próximo, transparência e cuidado em cada detalhe da experiência escolar.",
+        "O período de 0 a 5 anos é o mais importante na formação da criança. Nessa etapa ela constrói os principais recursos para lidar e interagir com as novas experiências. O tempo todo a criança age, descobrindo, criando, perguntando, elaborando, refazendo e socializando-se.",
+        "Nesse processo de formação, a Educação Infantil deve proporcionar um conjunto de meios, materiais e oportunidades para um crescimento saudável em todos os aspectos.",
       ]}
-      highlights={[
-        "Turmas reduzidas com atenção individual",
-        "Rotina estruturada e ambiente acolhedor",
-        "Estímulo à autonomia, linguagem e socialização",
-        "Comunicação próxima e diária com as famílias",
-        "Atividades lúdicas e pedagógicas equilibradas",
-      ]}
-      nextLabel="Fundamental I"
-      nextTo="/fundamental-1"
+      atividades={["Musicalidade", "Arte", "Hora do conto", "Bosque"]}
       whatsappMsg="Olá! Gostaria de saber mais sobre a Educação Infantil."
     />
   );
