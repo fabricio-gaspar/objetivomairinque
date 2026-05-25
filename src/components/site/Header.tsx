@@ -1,8 +1,10 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Phone, GraduationCap, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NAV, SITE, wa } from "@/lib/site";
+import logo from "@/assets/logo.png";
+
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -22,15 +24,10 @@ export function Header() {
 
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-lg">
         <div className="container-tight flex items-center justify-between py-4">
-          <Link to="/" className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <GraduationCap className="h-5 w-5" />
-            </div>
-            <div className="leading-tight">
-              <div className="font-display text-base font-bold tracking-tight text-primary">OBJETIVO</div>
-              <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Mairinque</div>
-            </div>
+          <Link to="/" className="flex items-center">
+            <img src={logo} alt="Colégio Objetivo Mairinque" className="h-12 w-auto md:h-14" />
           </Link>
+
 
           <nav className="hidden items-center gap-7 lg:flex">
             {NAV.map((item) => {
