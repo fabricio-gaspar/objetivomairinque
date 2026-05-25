@@ -17,7 +17,7 @@ export function SectionHeading({ eyebrow, title, subtitle, align = "center", siz
           <span className="h-px w-8 bg-[var(--gold)]/60" />
         </div>
       )}
-      <h2 className="mt-4 text-3xl font-bold text-balance text-primary md:text-4xl lg:text-5xl">
+      <h2 className={`mt-4 font-bold text-balance text-primary ${size === "md" ? "text-2xl md:text-3xl" : "text-3xl md:text-4xl lg:text-5xl"}`}>
         {title}
       </h2>
       <div className={`mt-4 flex items-center gap-2 ${isCenter ? "justify-center" : ""}`}>
