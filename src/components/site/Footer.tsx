@@ -1,21 +1,15 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin, Phone, Mail, Clock, GraduationCap } from "lucide-react";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { NAV, SITE } from "@/lib/site";
+import logo from "@/assets/logo.png";
+
 
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-border bg-primary text-primary-foreground">
       <div className="container-tight grid gap-10 py-16 md:grid-cols-4">
         <div className="md:col-span-1">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--gold)] text-primary">
-              <GraduationCap className="h-5 w-5" />
-            </div>
-            <div className="leading-tight">
-              <div className="font-display text-base font-bold">OBJETIVO</div>
-              <div className="text-[10px] uppercase tracking-[0.2em] opacity-70">Mairinque</div>
-            </div>
-          </div>
+          <img src={logo} alt="Colégio Objetivo Mairinque" className="h-12 w-auto" />
           <p className="mt-4 text-sm opacity-75 text-pretty">
             Educação de excelência há mais de 20 anos, formando estudantes preparados para os desafios do futuro.
           </p>
