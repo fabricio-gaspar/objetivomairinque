@@ -66,26 +66,29 @@ function Home() {
   return (
     <>
       {/* SLIDESHOW */}
-      <section className="relative h-[60vh] min-h-[420px] w-full overflow-hidden bg-primary">
-        {slides.map((src, idx) => (
-          <img
-            key={src}
-            src={src}
-            alt=""
-            className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${idx === i ? "opacity-100" : "opacity-0"}`}
-          />
-        ))}
-        <div className="absolute inset-x-0 bottom-6 flex justify-center gap-2">
-          {slides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setI(idx)}
-              aria-label={`Slide ${idx + 1}`}
-              className={`h-2 rounded-full transition-all ${idx === i ? "w-8 bg-white" : "w-2 bg-white/50"}`}
+      <section className="relative w-full overflow-hidden bg-primary">
+        <div className="relative aspect-[21/9] max-h-[640px] min-h-[320px] w-full">
+          {slides.map((src, idx) => (
+            <img
+              key={src}
+              src={src}
+              alt=""
+              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-1000 ${idx === i ? "opacity-100" : "opacity-0"}`}
             />
           ))}
+          <div className="absolute inset-x-0 bottom-6 flex justify-center gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setI(idx)}
+                aria-label={`Slide ${idx + 1}`}
+                className={`h-2 rounded-full transition-all ${idx === i ? "w-8 bg-white" : "w-2 bg-white/50"}`}
+              />
+            ))}
+          </div>
         </div>
       </section>
+
 
       {/* NÍVEIS DE ENSINO */}
       <section className="container-tight py-20">
