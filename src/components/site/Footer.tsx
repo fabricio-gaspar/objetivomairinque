@@ -24,11 +24,22 @@ export function Footer() {
         <div>
           <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-[var(--gold)]">Navegação</h4>
           <ul className="mt-4 space-y-2 text-sm">
-            {NAV.map((l) => (
+            {NAV.flatMap((item) => {
+              if ("children" in item) return item.children;
+              if ("external" in item && item.external)
+                return [{ label: item.label, to: item.href, _ext: true as const }];
+              return [item];
+            }).map((l) => (
               <li key={l.to}>
-                <Link to={l.to} className="opacity-80 hover:opacity-100 hover:underline">
-                  {l.label}
-                </Link>
+                {"_ext" in l ? (
+                  <a href={l.to} target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 hover:underline">
+                    {l.label}
+                  </a>
+                ) : (
+                  <Link to={l.to} className="opacity-80 hover:opacity-100 hover:underline">
+                    {l.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

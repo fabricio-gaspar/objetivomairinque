@@ -1,11 +1,12 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, Phone, GraduationCap } from "lucide-react";
+import { Menu, X, Phone, GraduationCap, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NAV, SITE, wa } from "@/lib/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [openSub, setOpenSub] = useState<string | null>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
   return (
@@ -32,15 +33,51 @@ export function Header() {
           </Link>
 
           <nav className="hidden items-center gap-7 lg:flex">
-            {NAV.map((l) => {
-              const active = pathname === l.to;
+            {NAV.map((item) => {
+              if ("children" in item) {
+                const active = item.children.some((c) => c.to === pathname);
+                return (
+                  <div key={item.label} className="group relative">
+                    <button
+                      className={`inline-flex items-center gap-1 text-sm font-medium transition-colors ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
+                    >
+                      {item.label} <ChevronDown className="h-3.5 w-3.5" />
+                    </button>
+                    <div className="invisible absolute left-1/2 top-full z-50 mt-2 w-56 -translate-x-1/2 rounded-xl border border-border bg-background p-2 opacity-0 shadow-elegant transition-all group-hover:visible group-hover:opacity-100">
+                      {item.children.map((c) => (
+                        <Link
+                          key={c.to}
+                          to={c.to}
+                          className="block rounded-lg px-3 py-2 text-sm text-foreground/80 hover:bg-muted hover:text-primary"
+                        >
+                          {c.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              if ("external" in item && item.external) {
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
+                  >
+                    {item.label}
+                  </a>
+                );
+              }
+              const active = pathname === item.to;
               return (
                 <Link
-                  key={l.to}
-                  to={l.to}
+                  key={item.to}
+                  to={item.to}
                   className={`text-sm font-medium transition-colors ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
                 >
-                  {l.label}
+                  {item.label}
                 </Link>
               );
             })}
@@ -60,16 +97,59 @@ export function Header() {
         {open && (
           <nav className="border-t border-border bg-background lg:hidden">
             <div className="container-tight flex flex-col gap-1 py-3">
-              {NAV.map((l) => (
-                <Link
-                  key={l.to}
-                  to={l.to}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted"
-                >
-                  {l.label}
-                </Link>
-              ))}
+              {NAV.map((item) => {
+                if ("children" in item) {
+                  const isSubOpen = openSub === item.label;
+                  return (
+                    <div key={item.label}>
+                      <button
+                        onClick={() => setOpenSub(isSubOpen ? null : item.label)}
+                        className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted"
+                      >
+                        {item.label} <ChevronDown className={`h-4 w-4 transition-transform ${isSubOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      {isSubOpen && (
+                        <div className="ml-3 flex flex-col">
+                          {item.children.map((c) => (
+                            <Link
+                              key={c.to}
+                              to={c.to}
+                              onClick={() => setOpen(false)}
+                              className="rounded-lg px-3 py-2 text-sm text-foreground/80 hover:bg-muted"
+                            >
+                              {c.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                if ("external" in item && item.external) {
+                  return (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setOpen(false)}
+                      className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted"
+                    >
+                      {item.label}
+                    </a>
+                  );
+                }
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setOpen(false)}
+                    className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted"
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
               <Button asChild className="mt-2" size="sm">
                 <a href={wa("Olá! Gostaria de agendar uma visita ao colégio.")} target="_blank" rel="noopener noreferrer">
                   Agendar visita
