@@ -82,7 +82,7 @@ export function Header() {
             })}
           </nav>
 
-          <Button asChild className="hidden lg:inline-flex" size="sm">
+          <Button asChild className="hidden bg-[var(--gold)] text-primary shadow-soft transition-all hover:-translate-y-0.5 hover:bg-[var(--gold)]/90 hover:shadow-elegant lg:inline-flex" size="sm">
             <a href={wa("Olá! Gostaria de agendar uma visita ao colégio.")} target="_blank" rel="noopener noreferrer">
               Agendar visita
             </a>
