@@ -1,8 +1,9 @@
-export function SectionHeading({ eyebrow, title, subtitle, align = "center" }: {
+export function SectionHeading({ eyebrow, title, subtitle, align = "center", size = "lg" }: {
   eyebrow?: string;
   title: string;
   subtitle?: string;
   align?: "center" | "left";
+  size?: "lg" | "md";
 }) {
   const isCenter = align === "center";
   return (
