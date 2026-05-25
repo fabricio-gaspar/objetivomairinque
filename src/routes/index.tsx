@@ -73,7 +73,7 @@ function Home() {
               key={src}
               src={src}
               alt=""
-              className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-1000 ${idx === i ? "opacity-100" : "opacity-0"}`}
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${idx === i ? "opacity-100" : "opacity-0"}`}
             />
           ))}
           <div className="absolute inset-x-0 bottom-6 flex justify-center gap-2">
