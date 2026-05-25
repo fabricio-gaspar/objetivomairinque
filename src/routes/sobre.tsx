@@ -27,8 +27,7 @@ const atividades: { nome: string; flag?: string }[] = [
 function Sobre() {
   return (
     <>
-      <section className="relative overflow-hidden bg-muted/40 py-16">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--gold)_0%,_transparent_55%)] opacity-[0.07]" />
+      <section className="page-header py-16">
         <div className="container-tight relative text-center">
           <SectionHeading eyebrow="Conheça um pouco da nossa história" title="Sobre Nós" />
         </div>
@@ -58,7 +57,7 @@ function Sobre() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-muted/40 py-16">
+      <section className="page-header relative py-16">
         <BookOpen className="pointer-events-none absolute -right-8 -top-8 h-48 w-48 text-[var(--gold)] opacity-[0.06]" />
         <div className="container-tight relative">
           <h2 className="section-title font-display text-2xl font-bold text-primary">Proposta Pedagógica</h2>

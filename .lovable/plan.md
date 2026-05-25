@@ -1,39 +1,40 @@
 ## Objetivo
-Adicionar um fundo elegante e harmonioso (tema escola) atrás de todos os títulos, bandeirinha nos idiomas em "Sobre Nós" e detalhes sutis no layout.
 
-## 1. Fundo elegante para títulos (global)
+Dar mais presença e elegância às faixas de título (a área onde aparecem "Contatos", "Sobre Nós", "Educação Infantil", etc.) que hoje ficam quase em branco. A solução precisa ser harmônica com o tema escola (azul + dourado) e aplicada de forma consistente em todas as páginas.
 
-Atualizar o componente `src/components/site/SectionHeading.tsx` para incluir, atrás do título, um ornamento sutil tema escola:
+## Abordagem
 
-- Linha dourada horizontal fina à esquerda e direita do eyebrow (separadores tipo "régua acadêmica").
-- Ícone decorativo discreto (ex.: `BookOpen` ou pequeno losango/medalha em dourado) sobreposto ao fundo do título, com opacidade baixa, alinhado ao centro.
-- Texto do título com um leve gradiente do `--primary` para um tom mais claro, mantendo legibilidade.
-- Pequeno traço (underline) dourado animado abaixo do título centrado.
+Criar uma classe utilitária única — `.page-header` — em `src/styles.css` e aplicar essa classe em todas as seções de cabeçalho de página. Assim, mudanças futuras ficam centralizadas.
 
-Como o `SectionHeading` é usado em todas as páginas (Home, Sobre, Contato, níveis de ensino), uma única edição aplica o efeito em todos os títulos automaticamente.
+### Visual do fundo `.page-header`
 
-Para títulos que NÃO usam `SectionHeading` (h2 internos como "Proposta Pedagógica", "Atividade Extracurricular", "Sobre Nós" no corpo), criar uma classe utilitária `.section-title` em `src/styles.css` com:
-- Pequeno traço dourado vertical à esquerda (border-left de 3px dourado).
-- Padding-left adequado.
-- Aplicar essa classe nos `<h2>` internos das páginas (sobre, contato, níveis).
+Camadas sobrepostas, todas sutis para não competir com o título:
 
-## 2. Bandeirinha nos idiomas (página Sobre)
+1. **Base**: gradiente muito suave do `--muted` para o `--background`, dando profundidade sem escurecer.
+2. **Padrão decorativo**: grade fina dourada (pattern SVG inline em `background-image`) com baixíssima opacidade (~6%) — remete a papel pautado/caderno escolar de forma elegante.
+3. **Brilhos radiais**: dois `radial-gradient` discretos nos cantos (um azul `--primary` no canto superior esquerdo, um dourado `--gold` no canto superior direito), bem difusos e com opacidade ~8%.
+4. **Linhas finas douradas** no topo e na base da faixa (1px, opacidade ~30%) emoldurando a seção.
+5. **Ornamento decorativo SVG** em marca d'água ao fundo (ex.: `BookOpen` ou pequeno emblema), posicionado à direita, opacidade ~5%, escondido em mobile.
 
-Na lista de atividades extracurriculares de `src/routes/sobre.tsx`, transformar os itens em objetos com label + emoji opcional:
+O resultado: faixa clara, com textura sutil, brilhos suaves de cor e moldura dourada — coerente com o resto do site.
 
-- "Espanhol" → 🇪🇸
-- Adicionar campos para outros itens? Só "Espanhol" é idioma na lista atual. Manter apenas a bandeira da Espanha ao lado de "Espanhol".
+### Variante para páginas dos níveis de ensino
 
-Renderizar a bandeira (emoji) à esquerda do nome em um pequeno chip arredondado dentro do card.
-
-## 3. Detalhes elegantes no layout (página Sobre)
-
-- Card da imagem: adicionar uma moldura sutil (ring dourado de 1px com offset) e um pequeno selo decorativo "22 anos" no canto.
-- Seção "Proposta Pedagógica": fundo `bg-muted/40` ganha um ornamento sutil (linha dourada horizontal acima do título e um ícone `BookOpen` discreto).
-- Cards de atividades extracurriculares: ganham hover com elevação suave, ícone dourado à esquerda e transição.
-- Espaçamento vertical entre seções harmonizado.
+As páginas `educacao-infantil`, `fundamental-1`, `fundamental-2`, `integral` usam um hero escuro (`bg-hero`) em vez da faixa clara. Para essas, aplicar uma variante `.page-header--dark`:
+- Mantém o gradiente escuro existente.
+- Adiciona o mesmo padrão de grade dourada (opacidade um pouco maior, ~8%).
+- Adiciona os brilhos radiais (mais visíveis no fundo escuro).
+- Linhas douradas no topo/base.
+- Ornamento em marca d'água à direita.
 
 ## Arquivos afetados
-- `src/components/site/SectionHeading.tsx` — ornamento elegante no eyebrow/título.
-- `src/styles.css` — classe utilitária `.section-title` com traço dourado.
-- `src/routes/sobre.tsx` — bandeirinha em Espanhol, classe `.section-title` nos h2, polish nos cards e na imagem.
+
+- **`src/styles.css`** — Adicionar `.page-header` e `.page-header--dark` com todas as camadas (gradiente, pattern SVG inline, radial gradients, bordas douradas, ornamento ::before/::after).
+- **`src/routes/contato.tsx`** — Trocar `bg-muted/40` por `page-header` na seção do título.
+- **`src/routes/sobre.tsx`** — Aplicar `page-header` na faixa do título "Sobre Nós".
+- **`src/routes/index.tsx`** — Aplicar `page-header` em faixas de seção que hoje ficam em branco/muted (mantendo o hero principal como está).
+- **`src/components/site/NivelLayout.tsx`** — Adicionar `page-header--dark` à seção hero, cobrindo automaticamente as 4 páginas de níveis de ensino.
+
+## Detalhes técnicos
+
+O pattern de grade é um SVG inline em `background-image: url("data:image/svg+xml;utf8,...")` com linhas dourados a cada 32px. Combinado via `background-blend-mode` ou simplesmente sobreposto com `::before` absoluto e `pointer-events: none` para não interferir em cliques. Todas as camadas decorativas usam `pointer-events: none` e `aria-hidden`.

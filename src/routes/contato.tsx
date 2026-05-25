@@ -21,8 +21,8 @@ export const Route = createFileRoute("/contato")({
 function Contato() {
   return (
     <>
-      <section className="bg-muted/40 py-16">
-        <div className="container-tight text-center">
+      <section className="page-header py-16">
+        <div className="container-tight relative text-center">
           <SectionHeading eyebrow="Entre em contato caso tenha alguma dúvida ou sugestão" title="Contatos" />
         </div>
       </section>

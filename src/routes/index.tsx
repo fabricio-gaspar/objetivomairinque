@@ -131,15 +131,17 @@ function Home() {
       </section>
 
       {/* CTA MATRÍCULAS */}
-      <section className="container-tight py-20 text-center">
-        <SectionHeading eyebrow="Faça parte deste time!" title="Matrículas abertas 2026" />
+      <section className="page-header py-20">
+        <div className="container-tight relative text-center">
+          <SectionHeading eyebrow="Faça parte deste time!" title="Matrículas abertas 2026" />
 
-        <div className="mt-8">
-          <Button asChild size="lg" className="bg-[var(--gold)] text-primary hover:bg-[var(--gold)]/90">
-            <a href={wa("Olá! Gostaria de mais informações sobre matrículas.")} target="_blank" rel="noopener noreferrer">
-              <MessageCircle className="mr-2 h-4 w-4" /> Contato
-            </a>
-          </Button>
+          <div className="mt-8">
+            <Button asChild size="lg" className="bg-[var(--gold)] text-primary hover:bg-[var(--gold)]/90">
+              <a href={wa("Olá! Gostaria de mais informações sobre matrículas.")} target="_blank" rel="noopener noreferrer">
+                <MessageCircle className="mr-2 h-4 w-4" /> Contato
+              </a>
+            </Button>
+          </div>
         </div>
       </section>
     </>
