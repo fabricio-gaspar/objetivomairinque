@@ -1,6 +1,8 @@
 import { Link } from "@tanstack/react-router";
-import { MapPin, Phone, Mail, Clock, GraduationCap } from "lucide-react";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import { NAV, SITE } from "@/lib/site";
+import logo from "@/assets/logo.png";
+
 
 export function Footer() {
   return (
