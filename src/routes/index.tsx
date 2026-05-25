@@ -67,6 +67,7 @@ const stats = [
 
 function Home() {
   const [i, setI] = useState(0);
+  const autoplay = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
   useEffect(() => {
     const t = setInterval(() => setI((v) => (v + 1) % slides.length), 5000);
     return () => clearInterval(t);
