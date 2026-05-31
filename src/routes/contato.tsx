@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/site/SectionHeading";
-import { SITE, wa } from "@/lib/site";
+import { useSiteSettings, waLink } from "@/hooks/useSiteSettings";
 
 export const Route = createFileRoute("/contato")({
   component: Contato,
@@ -19,6 +19,8 @@ export const Route = createFileRoute("/contato")({
 });
 
 function Contato() {
+  const SITE = useSiteSettings();
+  const wa = (m: string) => waLink(SITE.whatsapp, m);
   return (
     <>
       <section className="bg-muted/40 py-16">

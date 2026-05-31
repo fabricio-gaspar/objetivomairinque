@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { MapPin, Phone, Mail, Send, Facebook, Instagram, Youtube } from "lucide-react";
-import { SITE } from "@/lib/site";
+import { useSiteSettings } from "@/hooks/useSiteSettings";
 import logo from "@/assets/logo.png";
 
 const BLUE = "#1e40af";
 
 export function Footer() {
+  const SITE = useSiteSettings();
   return (
     <footer className="mt-24 text-white" style={{ backgroundColor: BLUE }}>
       <div className="container-tight py-16">

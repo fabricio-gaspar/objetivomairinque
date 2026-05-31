@@ -1,10 +1,11 @@
 import { MessageCircle } from "lucide-react";
-import { wa } from "@/lib/site";
+import { useSiteSettings, waLink } from "@/hooks/useSiteSettings";
 
 export function WhatsAppFloat({ message = "Olá! Gostaria de mais informações sobre o Colégio Objetivo Mairinque." }: { message?: string }) {
+  const site = useSiteSettings();
   return (
     <a
-      href={wa(message)}
+      href={waLink(site.whatsapp, message)}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Falar no WhatsApp"
@@ -15,3 +16,4 @@ export function WhatsAppFloat({ message = "Olá! Gostaria de mais informações 
     </a>
   );
 }
+

@@ -10,16 +10,29 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IntegralRouteImport } from './routes/integral'
 import { Route as Fundamental2RouteImport } from './routes/fundamental-2'
 import { Route as Fundamental1RouteImport } from './routes/fundamental-1'
 import { Route as EducacaoInfantilRouteImport } from './routes/educacao-infantil'
 import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminPaginasRouteImport } from './routes/_authenticated/admin.paginas'
+import { Route as AuthenticatedAdminMidiaRouteImport } from './routes/_authenticated/admin.midia'
+import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin.configuracoes'
+import { Route as AuthenticatedAdminPaginasSlugRouteImport } from './routes/_authenticated/admin.paginas.$slug'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntegralRoute = IntegralRouteImport.update({
@@ -47,11 +60,48 @@ const ContatoRoute = ContatoRouteImport.update({
   path: '/contato',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminPaginasRoute =
+  AuthenticatedAdminPaginasRouteImport.update({
+    id: '/paginas',
+    path: '/paginas',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminMidiaRoute = AuthenticatedAdminMidiaRouteImport.update({
+  id: '/midia',
+  path: '/midia',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminConfiguracoesRoute =
+  AuthenticatedAdminConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPaginasSlugRoute =
+  AuthenticatedAdminPaginasSlugRouteImport.update({
+    id: '/$slug',
+    path: '/$slug',
+    getParentRoute: () => AuthenticatedAdminPaginasRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,7 +110,14 @@ export interface FileRoutesByFullPath {
   '/fundamental-1': typeof Fundamental1Route
   '/fundamental-2': typeof Fundamental2Route
   '/integral': typeof IntegralRoute
+  '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/midia': typeof AuthenticatedAdminMidiaRoute
+  '/admin/paginas': typeof AuthenticatedAdminPaginasRouteWithChildren
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/admin/paginas/$slug': typeof AuthenticatedAdminPaginasSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,17 +126,31 @@ export interface FileRoutesByTo {
   '/fundamental-1': typeof Fundamental1Route
   '/fundamental-2': typeof Fundamental2Route
   '/integral': typeof IntegralRoute
+  '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
+  '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/midia': typeof AuthenticatedAdminMidiaRoute
+  '/admin/paginas': typeof AuthenticatedAdminPaginasRouteWithChildren
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/admin/paginas/$slug': typeof AuthenticatedAdminPaginasSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/contato': typeof ContatoRoute
   '/educacao-infantil': typeof EducacaoInfantilRoute
   '/fundamental-1': typeof Fundamental1Route
   '/fundamental-2': typeof Fundamental2Route
   '/integral': typeof IntegralRoute
+  '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/_authenticated/admin/midia': typeof AuthenticatedAdminMidiaRoute
+  '/_authenticated/admin/paginas': typeof AuthenticatedAdminPaginasRouteWithChildren
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/admin/paginas/$slug': typeof AuthenticatedAdminPaginasSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,7 +161,14 @@ export interface FileRouteTypes {
     | '/fundamental-1'
     | '/fundamental-2'
     | '/integral'
+    | '/login'
     | '/sobre'
+    | '/admin'
+    | '/admin/configuracoes'
+    | '/admin/midia'
+    | '/admin/paginas'
+    | '/admin/'
+    | '/admin/paginas/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -99,25 +177,41 @@ export interface FileRouteTypes {
     | '/fundamental-1'
     | '/fundamental-2'
     | '/integral'
+    | '/login'
     | '/sobre'
+    | '/admin/configuracoes'
+    | '/admin/midia'
+    | '/admin/paginas'
+    | '/admin'
+    | '/admin/paginas/$slug'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/contato'
     | '/educacao-infantil'
     | '/fundamental-1'
     | '/fundamental-2'
     | '/integral'
+    | '/login'
     | '/sobre'
+    | '/_authenticated/admin'
+    | '/_authenticated/admin/configuracoes'
+    | '/_authenticated/admin/midia'
+    | '/_authenticated/admin/paginas'
+    | '/_authenticated/admin/'
+    | '/_authenticated/admin/paginas/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   ContatoRoute: typeof ContatoRoute
   EducacaoInfantilRoute: typeof EducacaoInfantilRoute
   Fundamental1Route: typeof Fundamental1Route
   Fundamental2Route: typeof Fundamental2Route
   IntegralRoute: typeof IntegralRoute
+  LoginRoute: typeof LoginRoute
   SobreRoute: typeof SobreRoute
 }
 
@@ -128,6 +222,13 @@ declare module '@tanstack/react-router' {
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/integral': {
@@ -165,6 +266,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContatoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -172,16 +280,103 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/paginas': {
+      id: '/_authenticated/admin/paginas'
+      path: '/paginas'
+      fullPath: '/admin/paginas'
+      preLoaderRoute: typeof AuthenticatedAdminPaginasRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/midia': {
+      id: '/_authenticated/admin/midia'
+      path: '/midia'
+      fullPath: '/admin/midia'
+      preLoaderRoute: typeof AuthenticatedAdminMidiaRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/configuracoes': {
+      id: '/_authenticated/admin/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/paginas/$slug': {
+      id: '/_authenticated/admin/paginas/$slug'
+      path: '/$slug'
+      fullPath: '/admin/paginas/$slug'
+      preLoaderRoute: typeof AuthenticatedAdminPaginasSlugRouteImport
+      parentRoute: typeof AuthenticatedAdminPaginasRoute
+    }
   }
 }
 
+interface AuthenticatedAdminPaginasRouteChildren {
+  AuthenticatedAdminPaginasSlugRoute: typeof AuthenticatedAdminPaginasSlugRoute
+}
+
+const AuthenticatedAdminPaginasRouteChildren: AuthenticatedAdminPaginasRouteChildren =
+  {
+    AuthenticatedAdminPaginasSlugRoute: AuthenticatedAdminPaginasSlugRoute,
+  }
+
+const AuthenticatedAdminPaginasRouteWithChildren =
+  AuthenticatedAdminPaginasRoute._addFileChildren(
+    AuthenticatedAdminPaginasRouteChildren,
+  )
+
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
+  AuthenticatedAdminMidiaRoute: typeof AuthenticatedAdminMidiaRoute
+  AuthenticatedAdminPaginasRoute: typeof AuthenticatedAdminPaginasRouteWithChildren
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
+  AuthenticatedAdminMidiaRoute: AuthenticatedAdminMidiaRoute,
+  AuthenticatedAdminPaginasRoute: AuthenticatedAdminPaginasRouteWithChildren,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+}
+
+const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+}
+
+const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
+  AuthenticatedRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRoute: AuthenticatedRouteWithChildren,
   ContatoRoute: ContatoRoute,
   EducacaoInfantilRoute: EducacaoInfantilRoute,
   Fundamental1Route: Fundamental1Route,
   Fundamental2Route: Fundamental2Route,
   IntegralRoute: IntegralRoute,
+  LoginRoute: LoginRoute,
   SobreRoute: SobreRoute,
 }
 export const routeTree = rootRouteImport
