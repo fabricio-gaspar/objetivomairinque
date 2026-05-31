@@ -2,7 +2,8 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { NAV, SITE, wa } from "@/lib/site";
+import { NAV } from "@/lib/site";
+import { useSiteSettings, waLink } from "@/hooks/useSiteSettings";
 import logo from "@/assets/logo.png";
 
 
@@ -10,6 +11,8 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [openSub, setOpenSub] = useState<string | null>(null);
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const SITE = useSiteSettings();
+  const wa = (m: string) => waLink(SITE.whatsapp, m);
 
   return (
     <>
