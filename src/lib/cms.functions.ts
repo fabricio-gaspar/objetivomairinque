@@ -20,11 +20,11 @@ export type SiteSettings = {
 export type PageContent = {
   slug: string;
   title: string;
-  content: Record<string, unknown>;
+  content: Json;
   updatedAt: string;
 };
 
-function mapSettings(row: Record<string, unknown>): SiteSettings {
+function mapSettings(row: Json): SiteSettings {
   return {
     name: row.name as string,
     shortName: row.short_name as string,
@@ -48,7 +48,7 @@ export const getSiteSettings = createServerFn({ method: "GET" }).handler(async (
     console.error("getSiteSettings", error);
     return null;
   }
-  return data ? mapSettings(data as Record<string, unknown>) : null;
+  return data ? mapSettings(data as Json) : null;
 });
 
 export const getAllPages = createServerFn({ method: "GET" }).handler(async () => {
@@ -63,7 +63,7 @@ export const getAllPages = createServerFn({ method: "GET" }).handler(async () =>
   return (data ?? []).map((r) => ({
     slug: r.slug as string,
     title: r.title as string,
-    content: (r.content ?? {}) as Record<string, unknown>,
+    content: (r.content ?? {}) as Json,
     updatedAt: r.updated_at as string,
   })) as PageContent[];
 });
@@ -84,7 +84,7 @@ export const getPageBySlug = createServerFn({ method: "GET" })
     return {
       slug: row.slug as string,
       title: row.title as string,
-      content: (row.content ?? {}) as Record<string, unknown>,
+      content: (row.content ?? {}) as Json,
       updatedAt: row.updated_at as string,
     } as PageContent;
   });
@@ -135,7 +135,7 @@ export const updateSiteSettings = createServerFn({ method: "POST" })
 const pageUpdateSchema = z.object({
   slug: z.string().min(1).max(64),
   title: z.string().trim().min(1).max(200),
-  content: z.record(z.unknown()),
+  content: z.any().transform((v) => v as Json),
 });
 
 export const updatePage = createServerFn({ method: "POST" })
