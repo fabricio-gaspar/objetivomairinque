@@ -49,7 +49,7 @@ export const getSiteSettings = createServerFn({ method: "GET" }).handler(async (
     console.error("getSiteSettings", error);
     return null;
   }
-  return data ? mapSettings(data as Json) : null;
+  return data ? mapSettings(data as unknown as Record<string, unknown>) : null;
 });
 
 export const getAllPages = createServerFn({ method: "GET" }).handler(async () => {
