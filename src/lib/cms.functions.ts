@@ -24,7 +24,7 @@ export type PageContent = {
   updatedAt: string;
 };
 
-function mapSettings(row: Json): SiteSettings {
+function mapSettings(row: Record<string, unknown>): SiteSettings {
   return {
     name: row.name as string,
     shortName: row.short_name as string,
@@ -37,6 +37,7 @@ function mapSettings(row: Json): SiteSettings {
     portalUrl: row.portal_url as string,
   };
 }
+
 
 export const getSiteSettings = createServerFn({ method: "GET" }).handler(async () => {
   const { data, error } = await supabaseAdmin
