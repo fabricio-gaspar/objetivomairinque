@@ -105,7 +105,7 @@ function AuthenticatedLayout() {
             const active = n.exact ? pathname === n.to : pathname.startsWith(n.to);
             const Icon = n.icon;
             return (
-              <Link key={n.to} to={n.to} className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${active ? "bg-primary text-primary-foreground" : "text-foreground/80 hover:bg-muted"}`}>
+              <Link key={n.to} to={n.to as never} className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${active ? "bg-primary text-primary-foreground" : "text-foreground/80 hover:bg-muted"}`}>
                 <Icon className="h-4 w-4" /> {n.label}
               </Link>
             );
@@ -126,7 +126,7 @@ function AuthenticatedLayout() {
           <div className="font-display text-base font-bold text-primary">Painel</div>
           <div className="ml-auto flex gap-1">
             {nav.map((n) => (
-              <Link key={n.to} to={n.to} className="rounded px-2 py-1 text-xs hover:bg-muted">{n.label}</Link>
+              <Link key={n.to} to={n.to as never} className="rounded px-2 py-1 text-xs hover:bg-muted">{n.label}</Link>
             ))}
             <button onClick={logout} className="rounded px-2 py-1 text-xs hover:bg-muted">Sair</button>
           </div>
