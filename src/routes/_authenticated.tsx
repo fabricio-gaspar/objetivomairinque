@@ -86,12 +86,12 @@ function AuthenticatedLayout() {
     );
   }
 
-  const nav = [
+  const nav: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
     { to: "/admin", label: "Início", icon: LayoutDashboard, exact: true },
     { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
     { to: "/admin/paginas", label: "Páginas", icon: FileText },
     { to: "/admin/midia", label: "Mídia", icon: ImageIcon },
-  ] as const;
+  ];
 
   return (
     <div className="flex min-h-screen bg-muted/30">
