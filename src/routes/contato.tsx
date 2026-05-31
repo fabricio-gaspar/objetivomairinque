@@ -46,7 +46,7 @@ function Contato() {
               <div>
                 <div className="font-semibold text-primary">Telefone</div>
                 <a href={`tel:${SITE.phoneRaw}`} className="block text-sm text-foreground/80 hover:text-primary">{SITE.phone}</a>
-                <a href={`tel:${SITE.phone2Raw}`} className="block text-sm text-foreground/80 hover:text-primary">{SITE.phone2}</a>
+                
                 <div className="text-sm text-foreground/80">WhatsApp: {SITE.whatsappLabel}</div>
               </div>
             </div>

@@ -94,7 +94,7 @@ export function Footer() {
                 <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white/20 text-white">
                   <Phone className="h-3.5 w-3.5" />
                 </span>
-                <span>{SITE.phone}<br />{SITE.phone2}</span>
+                <span>{SITE.phone}</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-white/20 text-white">
