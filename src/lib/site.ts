@@ -3,6 +3,8 @@ export const SITE = {
   shortName: "Objetivo Mairinque",
   phone: "(11) 4718-2255",
   phoneRaw: "+551147182255",
+  phone2: "(11) 97062-5449",
+  phone2Raw: "+5511970625449",
   whatsapp: "5511997898763",
   whatsappLabel: "(11) 99789-8763",
   email: "contato@objetivomairinque.com.br",
