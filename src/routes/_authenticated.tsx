@@ -16,7 +16,8 @@ export const Route = createFileRoute("/_authenticated")({
 
 type Status = "checking" | "ok" | "not-admin" | "anon";
 
-const NAV = [
+type NavItem = { to: string; label: string; icon: React.ComponentType<{ className?: string }>; exact?: boolean };
+const NAV: NavItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/layout-home", label: "Layout da Home", icon: LayoutGrid },
   { to: "/admin/hero-slides", label: "Hero Slides", icon: Images },
@@ -34,7 +35,7 @@ const NAV = [
   { to: "/admin/menu", label: "Menu", icon: MenuIcon },
   { to: "/admin/rodape", label: "Rodapé", icon: FileText },
   { to: "/admin/usuarios", label: "Usuários", icon: Users },
-] as const;
+];
 
 function AuthenticatedLayout() {
   const navigate = useNavigate();
