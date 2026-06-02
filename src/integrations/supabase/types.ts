@@ -14,6 +14,329 @@ export type Database = {
   }
   public: {
     Tables: {
+      accessories: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          image_url: string | null
+          position: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          position?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          position?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      big_counter: {
+        Row: {
+          active: boolean
+          background_url: string | null
+          caption: string | null
+          id: number
+          number_value: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          background_url?: string | null
+          caption?: string | null
+          id?: number
+          number_value?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          background_url?: string | null
+          caption?: string | null
+          id?: number
+          number_value?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      differentials: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          icon: string | null
+          id: string
+          position: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          position?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          icon?: string | null
+          id?: string
+          position?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      faqs: {
+        Row: {
+          active: boolean
+          answer: string
+          category: string | null
+          created_at: string
+          id: string
+          position: number
+          question: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          answer?: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          position?: number
+          question: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          answer?: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          position?: number
+          question?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      footer_columns: {
+        Row: {
+          created_at: string
+          id: string
+          position: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          position?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          position?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      footer_links: {
+        Row: {
+          column_id: string
+          created_at: string
+          external: boolean
+          id: string
+          label: string
+          link: string
+          position: number
+          updated_at: string
+        }
+        Insert: {
+          column_id: string
+          created_at?: string
+          external?: boolean
+          id?: string
+          label: string
+          link?: string
+          position?: number
+          updated_at?: string
+        }
+        Update: {
+          column_id?: string
+          created_at?: string
+          external?: boolean
+          id?: string
+          label?: string
+          link?: string
+          position?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "footer_links_column_id_fkey"
+            columns: ["column_id"]
+            isOneToOne: false
+            referencedRelation: "footer_columns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      hero_slides: {
+        Row: {
+          active: boolean
+          created_at: string
+          cta_label: string | null
+          cta_link: string | null
+          id: string
+          image_url: string | null
+          position: number
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          cta_label?: string | null
+          cta_link?: string | null
+          id?: string
+          image_url?: string | null
+          position?: number
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          cta_label?: string | null
+          cta_link?: string | null
+          id?: string
+          image_url?: string | null
+          position?: number
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      history_events: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          id: string
+          position: number
+          title: string
+          updated_at: string
+          year: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          position?: number
+          title: string
+          updated_at?: string
+          year: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          id?: string
+          position?: number
+          title?: string
+          updated_at?: string
+          year?: string
+        }
+        Relationships: []
+      }
+      home_layout: {
+        Row: {
+          id: number
+          sections: Json
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          sections?: Json
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          sections?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      materials: {
+        Row: {
+          active: boolean
+          created_at: string
+          description: string | null
+          file_url: string | null
+          id: string
+          position: number
+          segment_slug: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          file_url?: string | null
+          id?: string
+          position?: number
+          segment_slug?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          description?: string | null
+          file_url?: string | null
+          id?: string
+          position?: number
+          segment_slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       media: {
         Row: {
           created_at: string
@@ -44,6 +367,83 @@ export type Database = {
         }
         Relationships: []
       }
+      menu_items: {
+        Row: {
+          created_at: string
+          external: boolean
+          id: string
+          label: string
+          link: string
+          parent_id: string | null
+          position: number
+          updated_at: string
+          visible: boolean
+        }
+        Insert: {
+          created_at?: string
+          external?: boolean
+          id?: string
+          label: string
+          link?: string
+          parent_id?: string | null
+          position?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Update: {
+          created_at?: string
+          external?: boolean
+          id?: string
+          label?: string
+          link?: string
+          parent_id?: string | null
+          position?: number
+          updated_at?: string
+          visible?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "menu_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "menu_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          phone: string | null
+          read: boolean
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          phone?: string | null
+          read?: boolean
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          phone?: string | null
+          read?: boolean
+          subject?: string | null
+        }
+        Relationships: []
+      }
       pages: {
         Row: {
           content: Json
@@ -65,11 +465,61 @@ export type Database = {
         }
         Relationships: []
       }
+      segments: {
+        Row: {
+          active: boolean
+          age_range: string | null
+          color: string | null
+          created_at: string
+          id: string
+          image_url: string | null
+          link: string | null
+          long_description: string | null
+          name: string
+          position: number
+          short_description: string | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          age_range?: string | null
+          color?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          link?: string | null
+          long_description?: string | null
+          name: string
+          position?: number
+          short_description?: string | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          age_range?: string | null
+          color?: string | null
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          link?: string | null
+          long_description?: string | null
+          name?: string
+          position?: number
+          short_description?: string | null
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           address: string
           email: string
+          facebook_url: string | null
           id: number
+          instagram_url: string | null
           name: string
           phone: string
           phone_raw: string
@@ -78,11 +528,14 @@ export type Database = {
           updated_at: string
           whatsapp: string
           whatsapp_label: string
+          youtube_url: string | null
         }
         Insert: {
           address: string
           email: string
+          facebook_url?: string | null
           id?: number
+          instagram_url?: string | null
           name: string
           phone: string
           phone_raw: string
@@ -91,11 +544,14 @@ export type Database = {
           updated_at?: string
           whatsapp: string
           whatsapp_label: string
+          youtube_url?: string | null
         }
         Update: {
           address?: string
           email?: string
+          facebook_url?: string | null
           id?: number
+          instagram_url?: string | null
           name?: string
           phone?: string
           phone_raw?: string
@@ -104,6 +560,40 @@ export type Database = {
           updated_at?: string
           whatsapp?: string
           whatsapp_label?: string
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
+      stats: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          label: string
+          position: number
+          suffix: string | null
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          label: string
+          position?: number
+          suffix?: string | null
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          label?: string
+          position?: number
+          suffix?: string | null
+          updated_at?: string
+          value?: string
         }
         Relationships: []
       }
