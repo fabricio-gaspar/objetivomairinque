@@ -20,9 +20,24 @@ import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminUsuariosRouteImport } from './routes/_authenticated/admin.usuarios'
+import { Route as AuthenticatedAdminSobreRouteImport } from './routes/_authenticated/admin.sobre'
+import { Route as AuthenticatedAdminSegmentosRouteImport } from './routes/_authenticated/admin.segmentos'
+import { Route as AuthenticatedAdminRodapeRouteImport } from './routes/_authenticated/admin.rodape'
 import { Route as AuthenticatedAdminPaginasRouteImport } from './routes/_authenticated/admin.paginas'
 import { Route as AuthenticatedAdminMidiaRouteImport } from './routes/_authenticated/admin.midia'
+import { Route as AuthenticatedAdminMenuRouteImport } from './routes/_authenticated/admin.menu'
+import { Route as AuthenticatedAdminMensagensRouteImport } from './routes/_authenticated/admin.mensagens'
+import { Route as AuthenticatedAdminMateriaisRouteImport } from './routes/_authenticated/admin.materiais'
+import { Route as AuthenticatedAdminLayoutHomeRouteImport } from './routes/_authenticated/admin.layout-home'
+import { Route as AuthenticatedAdminHistoriaRouteImport } from './routes/_authenticated/admin.historia'
+import { Route as AuthenticatedAdminHeroSlidesRouteImport } from './routes/_authenticated/admin.hero-slides'
+import { Route as AuthenticatedAdminFaqsRouteImport } from './routes/_authenticated/admin.faqs'
+import { Route as AuthenticatedAdminEstatisticasRouteImport } from './routes/_authenticated/admin.estatisticas'
+import { Route as AuthenticatedAdminDiferenciaisRouteImport } from './routes/_authenticated/admin.diferenciais'
 import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin.configuracoes'
+import { Route as AuthenticatedAdminBigCounterRouteImport } from './routes/_authenticated/admin.big-counter'
+import { Route as AuthenticatedAdminAcessoriosRouteImport } from './routes/_authenticated/admin.acessorios'
 import { Route as AuthenticatedAdminPaginasSlugRouteImport } from './routes/_authenticated/admin.paginas.$slug'
 
 const SobreRoute = SobreRouteImport.update({
@@ -79,6 +94,29 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminUsuariosRoute =
+  AuthenticatedAdminUsuariosRouteImport.update({
+    id: '/usuarios',
+    path: '/usuarios',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSobreRoute = AuthenticatedAdminSobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminSegmentosRoute =
+  AuthenticatedAdminSegmentosRouteImport.update({
+    id: '/segmentos',
+    path: '/segmentos',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminRodapeRoute =
+  AuthenticatedAdminRodapeRouteImport.update({
+    id: '/rodape',
+    path: '/rodape',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminPaginasRoute =
   AuthenticatedAdminPaginasRouteImport.update({
     id: '/paginas',
@@ -90,10 +128,74 @@ const AuthenticatedAdminMidiaRoute = AuthenticatedAdminMidiaRouteImport.update({
   path: '/midia',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminMenuRoute = AuthenticatedAdminMenuRouteImport.update({
+  id: '/menu',
+  path: '/menu',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminMensagensRoute =
+  AuthenticatedAdminMensagensRouteImport.update({
+    id: '/mensagens',
+    path: '/mensagens',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminMateriaisRoute =
+  AuthenticatedAdminMateriaisRouteImport.update({
+    id: '/materiais',
+    path: '/materiais',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminLayoutHomeRoute =
+  AuthenticatedAdminLayoutHomeRouteImport.update({
+    id: '/layout-home',
+    path: '/layout-home',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminHistoriaRoute =
+  AuthenticatedAdminHistoriaRouteImport.update({
+    id: '/historia',
+    path: '/historia',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminHeroSlidesRoute =
+  AuthenticatedAdminHeroSlidesRouteImport.update({
+    id: '/hero-slides',
+    path: '/hero-slides',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminFaqsRoute = AuthenticatedAdminFaqsRouteImport.update({
+  id: '/faqs',
+  path: '/faqs',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminEstatisticasRoute =
+  AuthenticatedAdminEstatisticasRouteImport.update({
+    id: '/estatisticas',
+    path: '/estatisticas',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminDiferenciaisRoute =
+  AuthenticatedAdminDiferenciaisRouteImport.update({
+    id: '/diferenciais',
+    path: '/diferenciais',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminConfiguracoesRoute =
   AuthenticatedAdminConfiguracoesRouteImport.update({
     id: '/configuracoes',
     path: '/configuracoes',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBigCounterRoute =
+  AuthenticatedAdminBigCounterRouteImport.update({
+    id: '/big-counter',
+    path: '/big-counter',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminAcessoriosRoute =
+  AuthenticatedAdminAcessoriosRouteImport.update({
+    id: '/acessorios',
+    path: '/acessorios',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminPaginasSlugRoute =
@@ -113,9 +215,24 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/admin/acessorios': typeof AuthenticatedAdminAcessoriosRoute
+  '/admin/big-counter': typeof AuthenticatedAdminBigCounterRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/diferenciais': typeof AuthenticatedAdminDiferenciaisRoute
+  '/admin/estatisticas': typeof AuthenticatedAdminEstatisticasRoute
+  '/admin/faqs': typeof AuthenticatedAdminFaqsRoute
+  '/admin/hero-slides': typeof AuthenticatedAdminHeroSlidesRoute
+  '/admin/historia': typeof AuthenticatedAdminHistoriaRoute
+  '/admin/layout-home': typeof AuthenticatedAdminLayoutHomeRoute
+  '/admin/materiais': typeof AuthenticatedAdminMateriaisRoute
+  '/admin/mensagens': typeof AuthenticatedAdminMensagensRoute
+  '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/midia': typeof AuthenticatedAdminMidiaRoute
   '/admin/paginas': typeof AuthenticatedAdminPaginasRouteWithChildren
+  '/admin/rodape': typeof AuthenticatedAdminRodapeRoute
+  '/admin/segmentos': typeof AuthenticatedAdminSegmentosRoute
+  '/admin/sobre': typeof AuthenticatedAdminSobreRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/admin/paginas/$slug': typeof AuthenticatedAdminPaginasSlugRoute
 }
@@ -128,9 +245,24 @@ export interface FileRoutesByTo {
   '/integral': typeof IntegralRoute
   '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
+  '/admin/acessorios': typeof AuthenticatedAdminAcessoriosRoute
+  '/admin/big-counter': typeof AuthenticatedAdminBigCounterRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/admin/diferenciais': typeof AuthenticatedAdminDiferenciaisRoute
+  '/admin/estatisticas': typeof AuthenticatedAdminEstatisticasRoute
+  '/admin/faqs': typeof AuthenticatedAdminFaqsRoute
+  '/admin/hero-slides': typeof AuthenticatedAdminHeroSlidesRoute
+  '/admin/historia': typeof AuthenticatedAdminHistoriaRoute
+  '/admin/layout-home': typeof AuthenticatedAdminLayoutHomeRoute
+  '/admin/materiais': typeof AuthenticatedAdminMateriaisRoute
+  '/admin/mensagens': typeof AuthenticatedAdminMensagensRoute
+  '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/midia': typeof AuthenticatedAdminMidiaRoute
   '/admin/paginas': typeof AuthenticatedAdminPaginasRouteWithChildren
+  '/admin/rodape': typeof AuthenticatedAdminRodapeRoute
+  '/admin/segmentos': typeof AuthenticatedAdminSegmentosRoute
+  '/admin/sobre': typeof AuthenticatedAdminSobreRoute
+  '/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/admin/paginas/$slug': typeof AuthenticatedAdminPaginasSlugRoute
 }
@@ -146,9 +278,24 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/_authenticated/admin/acessorios': typeof AuthenticatedAdminAcessoriosRoute
+  '/_authenticated/admin/big-counter': typeof AuthenticatedAdminBigCounterRoute
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
+  '/_authenticated/admin/diferenciais': typeof AuthenticatedAdminDiferenciaisRoute
+  '/_authenticated/admin/estatisticas': typeof AuthenticatedAdminEstatisticasRoute
+  '/_authenticated/admin/faqs': typeof AuthenticatedAdminFaqsRoute
+  '/_authenticated/admin/hero-slides': typeof AuthenticatedAdminHeroSlidesRoute
+  '/_authenticated/admin/historia': typeof AuthenticatedAdminHistoriaRoute
+  '/_authenticated/admin/layout-home': typeof AuthenticatedAdminLayoutHomeRoute
+  '/_authenticated/admin/materiais': typeof AuthenticatedAdminMateriaisRoute
+  '/_authenticated/admin/mensagens': typeof AuthenticatedAdminMensagensRoute
+  '/_authenticated/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/_authenticated/admin/midia': typeof AuthenticatedAdminMidiaRoute
   '/_authenticated/admin/paginas': typeof AuthenticatedAdminPaginasRouteWithChildren
+  '/_authenticated/admin/rodape': typeof AuthenticatedAdminRodapeRoute
+  '/_authenticated/admin/segmentos': typeof AuthenticatedAdminSegmentosRoute
+  '/_authenticated/admin/sobre': typeof AuthenticatedAdminSobreRoute
+  '/_authenticated/admin/usuarios': typeof AuthenticatedAdminUsuariosRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/admin/paginas/$slug': typeof AuthenticatedAdminPaginasSlugRoute
 }
@@ -164,9 +311,24 @@ export interface FileRouteTypes {
     | '/login'
     | '/sobre'
     | '/admin'
+    | '/admin/acessorios'
+    | '/admin/big-counter'
     | '/admin/configuracoes'
+    | '/admin/diferenciais'
+    | '/admin/estatisticas'
+    | '/admin/faqs'
+    | '/admin/hero-slides'
+    | '/admin/historia'
+    | '/admin/layout-home'
+    | '/admin/materiais'
+    | '/admin/mensagens'
+    | '/admin/menu'
     | '/admin/midia'
     | '/admin/paginas'
+    | '/admin/rodape'
+    | '/admin/segmentos'
+    | '/admin/sobre'
+    | '/admin/usuarios'
     | '/admin/'
     | '/admin/paginas/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -179,9 +341,24 @@ export interface FileRouteTypes {
     | '/integral'
     | '/login'
     | '/sobre'
+    | '/admin/acessorios'
+    | '/admin/big-counter'
     | '/admin/configuracoes'
+    | '/admin/diferenciais'
+    | '/admin/estatisticas'
+    | '/admin/faqs'
+    | '/admin/hero-slides'
+    | '/admin/historia'
+    | '/admin/layout-home'
+    | '/admin/materiais'
+    | '/admin/mensagens'
+    | '/admin/menu'
     | '/admin/midia'
     | '/admin/paginas'
+    | '/admin/rodape'
+    | '/admin/segmentos'
+    | '/admin/sobre'
+    | '/admin/usuarios'
     | '/admin'
     | '/admin/paginas/$slug'
   id:
@@ -196,9 +373,24 @@ export interface FileRouteTypes {
     | '/login'
     | '/sobre'
     | '/_authenticated/admin'
+    | '/_authenticated/admin/acessorios'
+    | '/_authenticated/admin/big-counter'
     | '/_authenticated/admin/configuracoes'
+    | '/_authenticated/admin/diferenciais'
+    | '/_authenticated/admin/estatisticas'
+    | '/_authenticated/admin/faqs'
+    | '/_authenticated/admin/hero-slides'
+    | '/_authenticated/admin/historia'
+    | '/_authenticated/admin/layout-home'
+    | '/_authenticated/admin/materiais'
+    | '/_authenticated/admin/mensagens'
+    | '/_authenticated/admin/menu'
     | '/_authenticated/admin/midia'
     | '/_authenticated/admin/paginas'
+    | '/_authenticated/admin/rodape'
+    | '/_authenticated/admin/segmentos'
+    | '/_authenticated/admin/sobre'
+    | '/_authenticated/admin/usuarios'
     | '/_authenticated/admin/'
     | '/_authenticated/admin/paginas/$slug'
   fileRoutesById: FileRoutesById
@@ -294,6 +486,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/usuarios': {
+      id: '/_authenticated/admin/usuarios'
+      path: '/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AuthenticatedAdminUsuariosRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/sobre': {
+      id: '/_authenticated/admin/sobre'
+      path: '/sobre'
+      fullPath: '/admin/sobre'
+      preLoaderRoute: typeof AuthenticatedAdminSobreRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/segmentos': {
+      id: '/_authenticated/admin/segmentos'
+      path: '/segmentos'
+      fullPath: '/admin/segmentos'
+      preLoaderRoute: typeof AuthenticatedAdminSegmentosRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/rodape': {
+      id: '/_authenticated/admin/rodape'
+      path: '/rodape'
+      fullPath: '/admin/rodape'
+      preLoaderRoute: typeof AuthenticatedAdminRodapeRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/paginas': {
       id: '/_authenticated/admin/paginas'
       path: '/paginas'
@@ -308,11 +528,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminMidiaRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/menu': {
+      id: '/_authenticated/admin/menu'
+      path: '/menu'
+      fullPath: '/admin/menu'
+      preLoaderRoute: typeof AuthenticatedAdminMenuRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/mensagens': {
+      id: '/_authenticated/admin/mensagens'
+      path: '/mensagens'
+      fullPath: '/admin/mensagens'
+      preLoaderRoute: typeof AuthenticatedAdminMensagensRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/materiais': {
+      id: '/_authenticated/admin/materiais'
+      path: '/materiais'
+      fullPath: '/admin/materiais'
+      preLoaderRoute: typeof AuthenticatedAdminMateriaisRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/layout-home': {
+      id: '/_authenticated/admin/layout-home'
+      path: '/layout-home'
+      fullPath: '/admin/layout-home'
+      preLoaderRoute: typeof AuthenticatedAdminLayoutHomeRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/historia': {
+      id: '/_authenticated/admin/historia'
+      path: '/historia'
+      fullPath: '/admin/historia'
+      preLoaderRoute: typeof AuthenticatedAdminHistoriaRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/hero-slides': {
+      id: '/_authenticated/admin/hero-slides'
+      path: '/hero-slides'
+      fullPath: '/admin/hero-slides'
+      preLoaderRoute: typeof AuthenticatedAdminHeroSlidesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/faqs': {
+      id: '/_authenticated/admin/faqs'
+      path: '/faqs'
+      fullPath: '/admin/faqs'
+      preLoaderRoute: typeof AuthenticatedAdminFaqsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/estatisticas': {
+      id: '/_authenticated/admin/estatisticas'
+      path: '/estatisticas'
+      fullPath: '/admin/estatisticas'
+      preLoaderRoute: typeof AuthenticatedAdminEstatisticasRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/diferenciais': {
+      id: '/_authenticated/admin/diferenciais'
+      path: '/diferenciais'
+      fullPath: '/admin/diferenciais'
+      preLoaderRoute: typeof AuthenticatedAdminDiferenciaisRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/configuracoes': {
       id: '/_authenticated/admin/configuracoes'
       path: '/configuracoes'
       fullPath: '/admin/configuracoes'
       preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/big-counter': {
+      id: '/_authenticated/admin/big-counter'
+      path: '/big-counter'
+      fullPath: '/admin/big-counter'
+      preLoaderRoute: typeof AuthenticatedAdminBigCounterRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/acessorios': {
+      id: '/_authenticated/admin/acessorios'
+      path: '/acessorios'
+      fullPath: '/admin/acessorios'
+      preLoaderRoute: typeof AuthenticatedAdminAcessoriosRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/paginas/$slug': {
@@ -340,16 +637,46 @@ const AuthenticatedAdminPaginasRouteWithChildren =
   )
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAcessoriosRoute: typeof AuthenticatedAdminAcessoriosRoute
+  AuthenticatedAdminBigCounterRoute: typeof AuthenticatedAdminBigCounterRoute
   AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
+  AuthenticatedAdminDiferenciaisRoute: typeof AuthenticatedAdminDiferenciaisRoute
+  AuthenticatedAdminEstatisticasRoute: typeof AuthenticatedAdminEstatisticasRoute
+  AuthenticatedAdminFaqsRoute: typeof AuthenticatedAdminFaqsRoute
+  AuthenticatedAdminHeroSlidesRoute: typeof AuthenticatedAdminHeroSlidesRoute
+  AuthenticatedAdminHistoriaRoute: typeof AuthenticatedAdminHistoriaRoute
+  AuthenticatedAdminLayoutHomeRoute: typeof AuthenticatedAdminLayoutHomeRoute
+  AuthenticatedAdminMateriaisRoute: typeof AuthenticatedAdminMateriaisRoute
+  AuthenticatedAdminMensagensRoute: typeof AuthenticatedAdminMensagensRoute
+  AuthenticatedAdminMenuRoute: typeof AuthenticatedAdminMenuRoute
   AuthenticatedAdminMidiaRoute: typeof AuthenticatedAdminMidiaRoute
   AuthenticatedAdminPaginasRoute: typeof AuthenticatedAdminPaginasRouteWithChildren
+  AuthenticatedAdminRodapeRoute: typeof AuthenticatedAdminRodapeRoute
+  AuthenticatedAdminSegmentosRoute: typeof AuthenticatedAdminSegmentosRoute
+  AuthenticatedAdminSobreRoute: typeof AuthenticatedAdminSobreRoute
+  AuthenticatedAdminUsuariosRoute: typeof AuthenticatedAdminUsuariosRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAcessoriosRoute: AuthenticatedAdminAcessoriosRoute,
+  AuthenticatedAdminBigCounterRoute: AuthenticatedAdminBigCounterRoute,
   AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
+  AuthenticatedAdminDiferenciaisRoute: AuthenticatedAdminDiferenciaisRoute,
+  AuthenticatedAdminEstatisticasRoute: AuthenticatedAdminEstatisticasRoute,
+  AuthenticatedAdminFaqsRoute: AuthenticatedAdminFaqsRoute,
+  AuthenticatedAdminHeroSlidesRoute: AuthenticatedAdminHeroSlidesRoute,
+  AuthenticatedAdminHistoriaRoute: AuthenticatedAdminHistoriaRoute,
+  AuthenticatedAdminLayoutHomeRoute: AuthenticatedAdminLayoutHomeRoute,
+  AuthenticatedAdminMateriaisRoute: AuthenticatedAdminMateriaisRoute,
+  AuthenticatedAdminMensagensRoute: AuthenticatedAdminMensagensRoute,
+  AuthenticatedAdminMenuRoute: AuthenticatedAdminMenuRoute,
   AuthenticatedAdminMidiaRoute: AuthenticatedAdminMidiaRoute,
   AuthenticatedAdminPaginasRoute: AuthenticatedAdminPaginasRouteWithChildren,
+  AuthenticatedAdminRodapeRoute: AuthenticatedAdminRodapeRoute,
+  AuthenticatedAdminSegmentosRoute: AuthenticatedAdminSegmentosRoute,
+  AuthenticatedAdminSobreRoute: AuthenticatedAdminSobreRoute,
+  AuthenticatedAdminUsuariosRoute: AuthenticatedAdminUsuariosRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
@@ -382,13 +709,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
