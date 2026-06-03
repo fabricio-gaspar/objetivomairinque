@@ -1,0 +1,89 @@
+# =====================================================================
+# .htaccess — Colégio Objetivo Mairinque (SPA estática no cPanel)
+# Coloque este arquivo na raiz do public_html, junto com o conteúdo de dist/
+# =====================================================================
+
+# --- 1) Forçar HTTPS ---
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- 2) Forçar domínio com www ---
+RewriteCond %{HTTP_HOST} ^objetivomairinque\.com\.br$ [NC]
+RewriteRule ^(.*)$ https://www.objetivomairinque.com.br/$1 [L,R=301]
+
+# --- 3) SPA fallback (TanStack Router / React Router no client) ---
+# Qualquer URL que não seja um arquivo ou pasta real, devolve o index.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.html [L]
+
+# --- 4) Compressão Gzip ---
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml application/xml application/rss+xml
+  AddOutputFilterByType DEFLATE font/ttf font/otf application/font-woff application/font-woff2
+</IfModule>
+
+# --- 5) Cache de assets (1 ano para arquivos com hash, 0 para HTML) ---
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresDefault                              "access plus 1 month"
+  ExpiresByType text/html                     "access plus 0 seconds"
+  ExpiresByType application/json              "access plus 0 seconds"
+  ExpiresByType text/xml                      "access plus 1 hour"
+  ExpiresByType text/css                      "access plus 1 year"
+  ExpiresByType application/javascript        "access plus 1 year"
+  ExpiresByType image/jpeg                    "access plus 6 months"
+  ExpiresByType image/png                     "access plus 6 months"
+  ExpiresByType image/webp                    "access plus 6 months"
+  ExpiresByType image/svg+xml                 "access plus 6 months"
+  ExpiresByType image/x-icon                  "access plus 1 year"
+  ExpiresByType font/ttf                      "access plus 1 year"
+  ExpiresByType font/otf                      "access plus 1 year"
+  ExpiresByType font/woff                     "access plus 1 year"
+  ExpiresByType font/woff2                    "access plus 1 year"
+</IfModule>
+
+# Reforço de cache para arquivos com hash do Vite (ex: assets/index-ab12cd34.js)
+<FilesMatch "\.(js|css|woff2|woff|ttf|otf|eot|svg|png|jpg|jpeg|webp|gif|ico)$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </IfModule>
+</FilesMatch>
+
+# HTML nunca deve ficar em cache (caso contrário updates não aparecem)
+<FilesMatch "\.html$">
+  <IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </IfModule>
+</FilesMatch>
+
+# --- 6) Headers de segurança ---
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# --- 7) Bloquear acesso a arquivos sensíveis ---
+<FilesMatch "(^\.htaccess|\.env|\.git|package\.json|package-lock\.json|bun\.lockb)$">
+  Require all denied
+</FilesMatch>
+
+# --- 8) MIME types corretos (alguns hostings cPanel falham nisso) ---
+<IfModule mod_mime.c>
+  AddType application/javascript            .js
+  AddType application/json                  .json
+  AddType text/css                          .css
+  AddType image/svg+xml                     .svg
+  AddType font/woff                         .woff
+  AddType font/woff2                        .woff2
+</IfModule>
+
+# --- 9) Páginas de erro ---
+ErrorDocument 404 /index.html
