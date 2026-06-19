@@ -1,55 +1,49 @@
-## Diagnóstico
+## Causa raiz (confirmada)
 
-O build está **100% funcional** — gera `dist/` com CSS (39.75 kB) e JS (1.44 MB) corretamente. O problema é exclusivamente na etapa de FTP:
+O site **está** sendo publicado no cPanel com CSS e JS — o deploy FTP funciona. O problema é diferente: o **CSS chega cru, sem compilação do Tailwind v4**.
 
+Verifiquei o CSS publicado em `https://objetivomairinque.com.br/assets/index-CtlNWbGX.css` e ele começa com:
+
+```css
+@media source(none){@layer theme,base,components,utilities;}@media source(none){@layer theme{@theme default{...
 ```
-FTPError: 530 Login authentication failed
+
+`@media source(none)` é uma diretiva interna do **Tailwind v4 não processado**. O navegador não conhece esse media-type, ignora todas as regras dentro, e a página renderiza **sem nenhum estilo** (branca/preta com texto cru). É exatamente o sintoma que você descreveu.
+
+## Por que acontece
+
+O `convert-to-spa.mjs` (executado pelo GitHub Actions antes do build) **reescreve `vite.config.ts`** para um Vite puro com apenas:
+
+```ts
+plugins: [TanStackRouterVite({...}), react()]
 ```
 
-Isso significa que o servidor `server.ssd1br.com.br:21` **respondeu** (não é firewall/SFTP), mas **rejeitou usuário+senha**. Conexão OK, credencial NÃO.
+**Falta o plugin `@tailwindcss/vite`**. Sem ele, o `@import "tailwindcss"` em `src/styles.css` não é compilado — o CSS sai com as diretivas internas do Tailwind v4 intactas, e o browser as ignora.
 
-## Causa mais provável
+(Esse problema é exclusivo do build SPA do cPanel. O preview do Lovable funciona porque usa a config original que tem o plugin embutido.)
 
-A senha cadastrada (`0Rpr)rUnoj&K;De`) tem caracteres problemáticos: `)`, `&`, `;`. Quando você copiou do cPanel para o GitHub Secrets, é muito comum:
-- Um espaço invisível no início ou fim
-- O `;` ter sido truncado em algum campo
-- Algum caractere ter sido reinterpretado por copy/paste do navegador
+## Correção
 
-Outra possibilidade: alguns servidores cPanel exigem formato alternativo de usuário (ex: `deploy.objetivomairinqu` sem o `@dominio`).
+Editar **apenas** `convert-to-spa.mjs`:
 
-## O que fazer (nenhuma mudança de código necessária)
+1. No bloco que reescreve `vite.config.ts` (linhas 46-67), adicionar o import e o plugin:
+   ```ts
+   import tailwindcss from "@tailwindcss/vite";
+   // ...
+   plugins: [
+     TanStackRouterVite({...}),
+     react(),
+     tailwindcss(),
+   ]
+   ```
 
-### Passo 1 — Resetar a senha FTP no cPanel (recomendado)
-1. No cPanel → **FTP Accounts**
-2. Localize `deploy@objetivomairinque.com.br` → **Change Password**
-3. Gere uma senha **só com letras e números** (ex: 20 chars alfanuméricos, sem símbolos)
-4. Copie e salve essa senha em local seguro
+2. No bloco que ajusta `package.json` (linhas 235-251), garantir que `@tailwindcss/vite` esteja em `devDependencies` (na versão `^4.0.0`) para o `bun install` baixar antes do build.
 
-### Passo 2 — Atualizar o secret no GitHub
-1. GitHub → repositório → **Settings → Secrets and variables → Actions**
-2. Clique em `FTP_PASSWORD` → **Update secret**
-3. Cole a nova senha alfanumérica (cuidado: sem espaço no início/fim)
-4. Salvar
+Nenhuma alteração em código de aplicação, rotas, componentes, workflow ou secrets — o workflow do GitHub Actions e o deploy FTP continuam exatamente como estão.
 
-### Passo 3 — Re-disparar o workflow
-1. GitHub → **Actions → Deploy to cPanel → Run workflow**
-2. Aguardar ~2 min
+## Verificação após o próximo push
 
-### Passo 4 — Se ainda der 530, testar formato alternativo de usuário
-No cPanel → FTP Accounts → ao lado da conta, clique em **Configure FTP Client**. Lá aparece o username exato que o servidor espera. Pode ser:
-- `deploy@objetivomairinque.com.br` (o que você usou)
-- `deploy+objetivomairinque.com.br` (formato alternativo de alguns provedores)
-- Apenas o prefixo curto da conta cPanel principal
-
-Atualize o secret `FTP_USERNAME` com o valor exato mostrado em "Configure FTP Client" e re-rode o workflow.
-
-## Por que NÃO é problema de arquitetura
-
-O log prova que tudo antes do FTP funcionou: `convert-to-spa`, `bun install`, `vite build`, sanity check do `dist/`, bloqueio de SSR — todos passaram ✅. Trocar a stack para a da APACE não resolveria esse erro, porque o FTP rejeitaria a senha do mesmo jeito.
-
-## O que eu farei depois que você confirmar que o deploy passou
-
-- Adicionar um aviso no workflow para mascarar melhor erros de credencial
-- (Opcional) Adicionar code-splitting para reduzir o aviso de chunk >500 kB que apareceu no build — puramente cosmético, não bloqueia nada
-
-**Sem alterações de código nesta etapa.** Você só precisa resetar a senha no cPanel e atualizar o secret no GitHub.
+1. O GitHub Actions roda `convert-to-spa.mjs` → `bun install` → `bun run build`.
+2. O novo CSS em `dist/assets/index-*.css` **não terá** mais `@media source(none)` — começará com regras CSS normais (`*,::before{...}`, `.flex{...}`, etc.).
+3. Subir o site no navegador (Ctrl+F5) deve mostrar o layout completo com cores, fontes e componentes.
+4. Se ainda houver problema, eu inspeciono os assets publicados e os logs do Action.
