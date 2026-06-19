@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// deploy-trigger: 2026-06-19T-validate-css
+// deploy-trigger: 2026-06-19T-full-dist-rebuild
 /**
  * convert-to-spa.mjs
  *

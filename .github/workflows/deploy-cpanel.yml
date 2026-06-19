@@ -65,6 +65,10 @@ jobs:
           set -e
           echo "Conteudo de dist/:"
           ls -la dist/
+          echo "Conteudo de dist/assets/:"
+          ls -la dist/assets/ || true
+          echo "Tamanhos de CSS gerados:"
+          find dist/assets -name '*.css' -exec wc -c {} \; || true
           if [ ! -f dist/index.html ]; then
             echo "ERRO: dist/index.html nao existe. Build falhou."
             exit 1
