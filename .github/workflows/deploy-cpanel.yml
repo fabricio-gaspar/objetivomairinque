@@ -1,0 +1,83 @@
+name: Deploy to cPanel
+
+# Toda vez que o Lovable (ou voce) faz push na main, este workflow:
+# 1. Converte o projeto TanStack Start (SSR) para SPA estatico
+# 2. Roda o build do Vite
+# 3. Envia o conteudo de dist/ via FTP para /public_html do cPanel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # permite rodar manualmente pela aba Actions
+
+concurrency:
+  group: deploy-cpanel
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Criar .env.production
+        run: |
+          cat > .env.production <<EOF
+          VITE_SUPABASE_URL=https://vhwhugcwrsltqlrlssyg.supabase.co
+          VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZod2h1Z2N3cnNsdHFscmxzc3lnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNTAxODgsImV4cCI6MjA5NTgyNjE4OH0.kOsrd1_t-jzcV67M3d_fNga9OfQyvk7hMJkfUfoYd_c
+          VITE_SUPABASE_PROJECT_ID=vhwhugcwrsltqlrlssyg
+          EOF
+
+      - name: Converter SSR para SPA estatico
+        run: node convert-to-spa.mjs
+
+      - name: Instalar dependencias
+        run: bun install
+
+      - name: Build (gera dist/)
+        run: bun run build
+
+      - name: Garantir .htaccess, robots.txt e sitemap.xml em dist/
+        run: |
+          [ -f public/.htaccess ] && cp public/.htaccess dist/.htaccess || true
+          [ -f public/robots.txt ] && cp public/robots.txt dist/robots.txt || true
+          [ -f public/sitemap.xml ] && cp public/sitemap.xml dist/sitemap.xml || true
+          ls -la dist/
+
+      - name: Deploy via FTP para o cPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: /public_html/
+          # Protocolo: ftps (FTP sobre TLS explicito) - padrao na maioria dos cPanels.
+          # Se seu provedor so aceitar FTP puro, troque para: protocol: ftp
+          protocol: ftps
+          port: 21
+          # Nao apaga arquivos do servidor que nao existem no dist/
+          # (util para preservar pastas como /cgi-bin, /webmail, emails etc.)
+          dangerous-clean-slate: false
+          # Excluir arquivos sensiveis e do proprio cPanel que nao devem ser tocados
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            cgi-bin/**
+            .well-known/**
+            .htpasswd*
+            error_log
