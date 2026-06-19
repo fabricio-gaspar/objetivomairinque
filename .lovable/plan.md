@@ -1,42 +1,55 @@
-# Plano: Confirmar deploy automático Lovable -> cPanel
+## Diagnóstico
 
-## Contexto atual
-- O repositório já tem `.github/workflows/deploy-cpanel.yml`: a cada push na `main` ele converte SSR -> SPA, gera `dist/` e faz FTP para `/public_html` no cPanel.
-- `public/.htaccess` já existe com fallback SPA, HTTPS, www e headers de segurança.
-- O workflow **apaga tudo em `/public_html` antes de subir** (`dangerous-clean-slate: true`), mas preserva pastas do sistema do cPanel.
+O build está **100% funcional** — gera `dist/` com CSS (39.75 kB) e JS (1.44 MB) corretamente. O problema é exclusivamente na etapa de FTP:
 
-## O que falta para "atualizar sozinho"
-O workflow só funciona depois que 3 secrets forem adicionados no repositório GitHub:
+```
+FTPError: 530 Login authentication failed
+```
 
-| Secret | De onde vem |
-|--------|-------------|
-| `FTP_HOST` | Host FTP do cPanel (ex: `ftp.objetivomairinque.com.br` ou IP) |
-| `FTP_USERNAME` | Usuário FTP (geralmente igual ao usuário cPanel) |
-| `FTP_PASSWORD` | Senha da conta FTP |
+Isso significa que o servidor `server.ssd1br.com.br:21` **respondeu** (não é firewall/SFTP), mas **rejeitou usuário+senha**. Conexão OK, credencial NÃO.
 
-Caminho no GitHub: **Repositório -> Settings -> Secrets and variables -> Actions -> New repository secret**.
+## Causa mais provável
 
-## Passos do plano
+A senha cadastrada (`0Rpr)rUnoj&K;De`) tem caracteres problemáticos: `)`, `&`, `;`. Quando você copiou do cPanel para o GitHub Secrets, é muito comum:
+- Um espaço invisível no início ou fim
+- O `;` ter sido truncado em algum campo
+- Algum caractere ter sido reinterpretado por copy/paste do navegador
 
-1. **Confirmar os 3 secrets no GitHub**
-   - Verificar se `FTP_HOST`, `FTP_USERNAME` e `FTP_PASSWORD` existem.
-   - Se faltarem, solicitar os dados e criar.
+Outra possibilidade: alguns servidores cPanel exigem formato alternativo de usuário (ex: `deploy.objetivomairinqu` sem o `@dominio`).
 
-2. **Testar o workflow manualmente**
-   - Ir em **Actions -> Deploy to cPanel -> Run workflow** no GitHub.
-   - Verificar se todos os passos passam, especialmente "Deploy via FTP".
+## O que fazer (nenhuma mudança de código necessária)
 
-3. **Validar o resultado no cPanel**
-   - Abrir `https://www.objetivomairinque.com.br/` e confirmar que carrega com CSS/JS.
-   - No File Manager do cPanel, confirmar que `public_html` tem `index.html`, `.htaccess` e a pasta `assets/`.
+### Passo 1 — Resetar a senha FTP no cPanel (recomendado)
+1. No cPanel → **FTP Accounts**
+2. Localize `deploy@objetivomairinque.com.br` → **Change Password**
+3. Gere uma senha **só com letras e números** (ex: 20 chars alfanuméricos, sem símbolos)
+4. Copie e salve essa senha em local seguro
 
-4. **Ajustar o workflow se houver erro de FTPS**
-   - Se a hospedagem bloquear FTPS na porta 21, trocar `protocol: ftps` por `protocol: ftp` no workflow.
+### Passo 2 — Atualizar o secret no GitHub
+1. GitHub → repositório → **Settings → Secrets and variables → Actions**
+2. Clique em `FTP_PASSWORD` → **Update secret**
+3. Cole a nova senha alfanumérica (cuidado: sem espaço no início/fim)
+4. Salvar
 
-5. **Melhoria de segurança (opcional, recomendado)**
-   - Mover as chaves do Supabase de dentro do workflow para secrets do GitHub (`VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, `VITE_SUPABASE_PROJECT_ID`), em vez de deixá-las hardcoded no arquivo YAML.
+### Passo 3 — Re-disparar o workflow
+1. GitHub → **Actions → Deploy to cPanel → Run workflow**
+2. Aguardar ~2 min
 
-## Resultado esperado
-- Toda alteração salva no Lovable vai para o GitHub automaticamente.
-- GitHub Actions dispara sozinho e publica em `www.objetivomairinque.com.br` em ~2-4 minutos.
-- Não precisa mais subir a pasta `dist/` manualmente.
+### Passo 4 — Se ainda der 530, testar formato alternativo de usuário
+No cPanel → FTP Accounts → ao lado da conta, clique em **Configure FTP Client**. Lá aparece o username exato que o servidor espera. Pode ser:
+- `deploy@objetivomairinque.com.br` (o que você usou)
+- `deploy+objetivomairinque.com.br` (formato alternativo de alguns provedores)
+- Apenas o prefixo curto da conta cPanel principal
+
+Atualize o secret `FTP_USERNAME` com o valor exato mostrado em "Configure FTP Client" e re-rode o workflow.
+
+## Por que NÃO é problema de arquitetura
+
+O log prova que tudo antes do FTP funcionou: `convert-to-spa`, `bun install`, `vite build`, sanity check do `dist/`, bloqueio de SSR — todos passaram ✅. Trocar a stack para a da APACE não resolveria esse erro, porque o FTP rejeitaria a senha do mesmo jeito.
+
+## O que eu farei depois que você confirmar que o deploy passou
+
+- Adicionar um aviso no workflow para mascarar melhor erros de credencial
+- (Opcional) Adicionar code-splitting para reduzir o aviso de chunk >500 kB que apareceu no build — puramente cosmético, não bloqueia nada
+
+**Sem alterações de código nesta etapa.** Você só precisa resetar a senha no cPanel e atualizar o secret no GitHub.
