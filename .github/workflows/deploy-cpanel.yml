@@ -1,14 +1,15 @@
 name: Deploy to cPanel
 
-# Toda vez que o Lovable (ou voce) faz push na main, este workflow:
-# 1. Converte o projeto TanStack Start (SSR) para SPA estatico
-# 2. Roda o build do Vite
-# 3. Envia o conteudo de dist/ via FTP para /public_html do cPanel
+# A cada push na main:
+# 1. Converte TanStack Start (SSR) -> SPA estatico
+# 2. Roda o build do Vite (gera ./dist)
+# 3. Verifica que o dist tem CSS+JS injetados (senao aborta)
+# 4. Limpa /public_html (preservando pastas do cPanel) e sobe SOMENTE o conteudo de dist/
 
 on:
   push:
     branches: [main]
-  workflow_dispatch: # permite rodar manualmente pela aba Actions
+  workflow_dispatch:
 
 concurrency:
   group: deploy-cpanel
@@ -17,7 +18,7 @@ concurrency:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -33,6 +34,9 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Limpar saidas antigas (dist, .output, .nitro)
+        run: rm -rf dist .output .nitro
+
       - name: Criar .env.production
         run: |
           cat > .env.production <<EOF
@@ -41,7 +45,7 @@ jobs:
           VITE_SUPABASE_PROJECT_ID=vhwhugcwrsltqlrlssyg
           EOF
 
-      - name: Converter SSR para SPA estatico
+      - name: Converter SSR -> SPA estatico
         run: node convert-to-spa.mjs
 
       - name: Instalar dependencias
@@ -50,14 +54,47 @@ jobs:
       - name: Build (gera dist/)
         run: bun run build
 
-      - name: Garantir .htaccess, robots.txt e sitemap.xml em dist/
+      - name: Copiar .htaccess, robots.txt e sitemap.xml para dist/
         run: |
-          [ -f public/.htaccess ] && cp public/.htaccess dist/.htaccess || true
-          [ -f public/robots.txt ] && cp public/robots.txt dist/robots.txt || true
+          [ -f public/.htaccess ]   && cp public/.htaccess   dist/.htaccess   || true
+          [ -f public/robots.txt ]  && cp public/robots.txt  dist/robots.txt  || true
           [ -f public/sitemap.xml ] && cp public/sitemap.xml dist/sitemap.xml || true
-          ls -la dist/
 
-      - name: Deploy via FTP para o cPanel
+      - name: Sanity check do dist/index.html
+        run: |
+          set -e
+          echo "Conteudo de dist/:"
+          ls -la dist/
+          if [ ! -f dist/index.html ]; then
+            echo "ERRO: dist/index.html nao existe. Build falhou."
+            exit 1
+          fi
+          if ! grep -q '<script' dist/index.html; then
+            echo "ERRO: dist/index.html nao tem <script> - build SPA quebrado (provavel saida SSR)."
+            exit 1
+          fi
+          if ! grep -qE '(<link[^>]+stylesheet|\.css")' dist/index.html; then
+            echo "ERRO: dist/index.html nao referencia CSS - build SPA quebrado."
+            exit 1
+          fi
+          if [ ! -d dist/assets ]; then
+            echo "ERRO: dist/assets nao existe."
+            exit 1
+          fi
+          echo "OK: dist/ valido para deploy."
+
+      - name: Bloquear saidas SSR no payload
+        # Garantia extra: se por algum motivo dist tiver artefato SSR, falhe.
+        run: |
+          set -e
+          for f in dist/_worker.js dist/server.js dist/index.server.html dist/.output dist/.nitro; do
+            if [ -e "$f" ]; then
+              echo "ERRO: artefato SSR encontrado em $f - abortando deploy."
+              exit 1
+            fi
+          done
+
+      - name: Deploy via FTP para /public_html (limpa antes de subir)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
@@ -65,14 +102,12 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /public_html/
-          # Protocolo: ftps (FTP sobre TLS explicito) - padrao na maioria dos cPanels.
-          # Se seu provedor so aceitar FTP puro, troque para: protocol: ftp
           protocol: ftps
           port: 21
-          # Nao apaga arquivos do servidor que nao existem no dist/
-          # (util para preservar pastas como /cgi-bin, /webmail, emails etc.)
-          dangerous-clean-slate: false
-          # Excluir arquivos sensiveis e do proprio cPanel que nao devem ser tocados
+          # Apaga TUDO em /public_html antes de subir, EXCETO os caminhos do exclude.
+          # Assim nunca sobra arquivo antigo (incluindo saidas SSR de uploads anteriores).
+          dangerous-clean-slate: true
+          # Pastas/arquivos do cPanel que NUNCA devem ser apagados nem sobrescritos.
           exclude: |
             **/.git*
             **/.git*/**
@@ -81,3 +116,5 @@ jobs:
             .well-known/**
             .htpasswd*
             error_log
+            php.ini
+            .user.ini
