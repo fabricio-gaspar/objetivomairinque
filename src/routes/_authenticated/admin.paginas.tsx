@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getAllPages } from "@/lib/cms.functions";
+import { getAllPages } from "@/lib/cms";
 import { ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/paginas")({
@@ -9,8 +8,7 @@ export const Route = createFileRoute("/_authenticated/admin/paginas")({
 });
 
 function PagesList() {
-  const fetchPages = useServerFn(getAllPages);
-  const { data, isLoading } = useQuery({ queryKey: ["pages"], queryFn: () => fetchPages() });
+  const { data, isLoading } = useQuery({ queryKey: ["pages"], queryFn: () => getAllPages() });
 
   return (
     <div className="mx-auto max-w-3xl">

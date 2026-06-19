@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { listMedia } from "@/lib/media.functions";
+import { listMedia } from "@/lib/media";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Image as ImageIcon, X } from "lucide-react";
 
 export function ImagePicker({ value, onChange, label = "Imagem" }: { value: string; onChange: (url: string) => void; label?: string }) {
-  const fetchList = useServerFn(listMedia);
-  const { data } = useQuery({ queryKey: ["media"], queryFn: () => fetchList() });
+  const { data } = useQuery({ queryKey: ["media"], queryFn: () => listMedia() });
   const [open, setOpen] = useState(false);
 
   return (

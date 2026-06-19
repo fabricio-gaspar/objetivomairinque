@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getSingleton, updateSingleton } from "@/lib/collections.functions";
+import { getSingleton, updateSingleton } from "@/lib/collections";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,16 +18,14 @@ type BC = { title: string; number_value: string; caption: string; background_url
 
 function BigCounterPage() {
   const qc = useQueryClient();
-  const fetchOne = useServerFn(getSingleton);
-  const save = useServerFn(updateSingleton);
-  const { data } = useQuery({ queryKey: ["singleton", "big_counter"], queryFn: () => fetchOne({ data: { name: "big_counter" } }) });
+  const { data } = useQuery({ queryKey: ["singleton", "big_counter"], queryFn: () => getSingleton("big_counter") });
   const [f, setF] = useState<BC>({ title: "", number_value: "0", caption: "", background_url: "", active: true });
 
   useEffect(() => { if (data) setF(data as unknown as BC); }, [data]);
 
   const onSave = async () => {
     try {
-      await save({ data: { name: "big_counter", values: f as unknown as Record<string, unknown> } });
+      await updateSingleton({ name: "big_counter", values: f as unknown as Record<string, unknown> });
       toast.success("Salvo.");
       qc.invalidateQueries({ queryKey: ["singleton", "big_counter"] });
     } catch (e) { toast.error((e as Error).message); }

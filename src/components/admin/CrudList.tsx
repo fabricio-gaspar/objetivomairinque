@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
 import {
   listCollection,
   createCollectionItem,
@@ -8,7 +7,7 @@ import {
   deleteCollectionItem,
   reorderCollection,
   type Collection,
-} from "@/lib/collections.functions";
+} from "@/lib/collections";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -36,11 +35,8 @@ type Props = {
   title: string;
   subtitle?: string;
   fields: FieldDef[];
-  /** Column to show as primary text in list */
   primaryField?: string;
-  /** Column to show as secondary text in list */
   secondaryField?: string;
-  /** Show active toggle column */
   hasActive?: boolean;
 };
 
@@ -48,15 +44,9 @@ type Row = Record<string, unknown> & { id: string; position?: number; active?: b
 
 export function CrudList({ collection, title, subtitle, fields, primaryField = "title", secondaryField, hasActive = true }: Props) {
   const qc = useQueryClient();
-  const fetchList = useServerFn(listCollection);
-  const create = useServerFn(createCollectionItem);
-  const update = useServerFn(updateCollectionItem);
-  const remove = useServerFn(deleteCollectionItem);
-  const reorder = useServerFn(reorderCollection);
-
   const { data, isLoading } = useQuery({
     queryKey: ["collection", collection],
-    queryFn: () => fetchList({ data: { collection } }),
+    queryFn: () => listCollection({ collection }),
   });
 
   const [editing, setEditing] = useState<Row | null>(null);
@@ -83,10 +73,10 @@ export function CrudList({ collection, title, subtitle, fields, primaryField = "
       if (hasActive) values.active = editing.active ?? true;
       if (!editing.id) {
         values.position = editing.position ?? 0;
-        await create({ data: { collection, values } });
+        await createCollectionItem({ collection, values });
         toast.success("Item criado.");
       } else {
-        await update({ data: { collection, id: editing.id, values } });
+        await updateCollectionItem({ collection, id: editing.id, values });
         toast.success("Item atualizado.");
       }
       setOpen(false);
@@ -99,7 +89,7 @@ export function CrudList({ collection, title, subtitle, fields, primaryField = "
   const del = async (id: string) => {
     if (!confirm("Excluir este item?")) return;
     try {
-      await remove({ data: { collection, id } });
+      await deleteCollectionItem({ collection, id });
       toast.success("Item excluído.");
       invalidate();
     } catch (err) { toast.error((err as Error).message); }
@@ -114,14 +104,14 @@ export function CrudList({ collection, title, subtitle, fields, primaryField = "
     const reordered = [...list];
     [reordered[i], reordered[j]] = [reordered[j], reordered[i]];
     try {
-      await reorder({ data: { collection, ids: reordered.map((r) => r.id) } });
+      await reorderCollection({ collection, ids: reordered.map((r) => r.id) });
       invalidate();
     } catch (err) { toast.error((err as Error).message); }
   };
 
   const toggleActive = async (row: Row) => {
     try {
-      await update({ data: { collection, id: row.id, values: { active: !row.active } } });
+      await updateCollectionItem({ collection, id: row.id, values: { active: !row.active } });
       invalidate();
     } catch (err) { toast.error((err as Error).message); }
   };

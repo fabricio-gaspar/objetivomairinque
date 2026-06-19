@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { listMedia, registerMedia, deleteMedia } from "@/lib/media.functions";
+import { listMedia, registerMedia, deleteMedia } from "@/lib/media";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Upload, Trash2, Copy } from "lucide-react";
@@ -14,10 +13,7 @@ export const Route = createFileRoute("/_authenticated/admin/midia")({
 
 function MediaPage() {
   const qc = useQueryClient();
-  const fetchList = useServerFn(listMedia);
-  const register = useServerFn(registerMedia);
-  const remove = useServerFn(deleteMedia);
-  const { data, isLoading } = useQuery({ queryKey: ["media"], queryFn: () => fetchList() });
+  const { data, isLoading } = useQuery({ queryKey: ["media"], queryFn: () => listMedia() });
   const fileRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
@@ -33,7 +29,7 @@ function MediaPage() {
       });
       if (upErr) throw upErr;
       const { data: pub } = supabase.storage.from("site-media").getPublicUrl(path);
-      await register({ data: { name: file.name, path, url: pub.publicUrl, mimeType: file.type, size: file.size } });
+      await registerMedia({ name: file.name, path, url: pub.publicUrl, mimeType: file.type, size: file.size });
       toast.success("Imagem enviada.");
       qc.invalidateQueries({ queryKey: ["media"] });
     } catch (err) {
@@ -47,7 +43,7 @@ function MediaPage() {
   const onDelete = async (id: string, path: string) => {
     if (!confirm("Excluir esta imagem?")) return;
     try {
-      await remove({ data: { id, path } });
+      await deleteMedia({ id, path });
       toast.success("Imagem excluída.");
       qc.invalidateQueries({ queryKey: ["media"] });
     } catch (err) {

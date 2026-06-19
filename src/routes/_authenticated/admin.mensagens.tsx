@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { listMessages, setMessageRead, deleteMessage } from "@/lib/messages.functions";
+import { listMessages, setMessageRead, deleteMessage } from "@/lib/messages";
 import { Button } from "@/components/ui/button";
 import { Trash2, Mail, MailOpen } from "lucide-react";
 import { toast } from "sonner";
@@ -12,19 +11,16 @@ export const Route = createFileRoute("/_authenticated/admin/mensagens")({
 
 function MessagesPage() {
   const qc = useQueryClient();
-  const fetchList = useServerFn(listMessages);
-  const setRead = useServerFn(setMessageRead);
-  const del = useServerFn(deleteMessage);
-  const { data } = useQuery({ queryKey: ["messages"], queryFn: () => fetchList() });
+  const { data } = useQuery({ queryKey: ["messages"], queryFn: () => listMessages() });
 
   const invalidate = () => qc.invalidateQueries({ queryKey: ["messages"] });
 
   const toggle = async (id: string, read: boolean) => {
-    try { await setRead({ data: { id, read } }); invalidate(); } catch (e) { toast.error((e as Error).message); }
+    try { await setMessageRead({ id, read }); invalidate(); } catch (e) { toast.error((e as Error).message); }
   };
   const remove = async (id: string) => {
     if (!confirm("Excluir esta mensagem?")) return;
-    try { await del({ data: { id } }); invalidate(); toast.success("Excluída."); } catch (e) { toast.error((e as Error).message); }
+    try { await deleteMessage({ id }); invalidate(); toast.success("Excluída."); } catch (e) { toast.error((e as Error).message); }
   };
 
   return (

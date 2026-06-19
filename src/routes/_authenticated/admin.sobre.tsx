@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getPageBySlug, updatePage } from "@/lib/cms.functions";
+import { getPageBySlug, updatePage } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -40,9 +39,7 @@ const DEFAULTS: SobreContent = {
 
 function SobrePage() {
   const qc = useQueryClient();
-  const fetchPage = useServerFn(getPageBySlug);
-  const save = useServerFn(updatePage);
-  const { data } = useQuery({ queryKey: ["page", "sobre"], queryFn: () => fetchPage({ data: { slug: "sobre" } }) });
+  const { data } = useQuery({ queryKey: ["page", "sobre"], queryFn: () => getPageBySlug("sobre") });
   const [f, setF] = useState<SobreContent>(DEFAULTS);
   const [title, setTitle] = useState("Sobre Nós");
 
@@ -55,7 +52,7 @@ function SobrePage() {
 
   const onSave = async () => {
     try {
-      await save({ data: { slug: "sobre", title, content: f as unknown as Record<string, unknown> } });
+      await updatePage({ slug: "sobre", title, content: f as unknown as Record<string, unknown> });
       toast.success("Página Sobre salva.");
       qc.invalidateQueries({ queryKey: ["page", "sobre"] });
     } catch (e) { toast.error((e as Error).message); }

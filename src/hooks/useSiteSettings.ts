@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getSiteSettings, type SiteSettings } from "@/lib/cms.functions";
+import { getSiteSettings, type SiteSettings } from "@/lib/cms";
 import { SITE } from "@/lib/site";
 
 const FALLBACK: SiteSettings = {
