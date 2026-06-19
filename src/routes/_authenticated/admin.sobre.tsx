@@ -52,7 +52,7 @@ function SobrePage() {
 
   const onSave = async () => {
     try {
-      await updatePage({ slug: "sobre", title, content: f as unknown as Record<string, unknown> });
+      await updatePage({ slug: "sobre", title, content: f as never });
       toast.success("Página Sobre salva.");
       qc.invalidateQueries({ queryKey: ["page", "sobre"] });
     } catch (e) { toast.error((e as Error).message); }
