@@ -33,6 +33,6 @@ export const NAV: NavItem[] = [
       { label: "Integral", to: "/integral" },
     ],
   },
-  { label: "Portal do Aluno Teste\n\n", href: "https://portal.sponteeducacional.net.br/default.aspx?CID=54326", external: true },
+  { label: "Portal do Aluno\u00a0", href: "https://portal.sponteeducacional.net.br/default.aspx?CID=54326", external: true },
   { label: "Contatos", to: "/contato" },
 ];
