@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getSingleton, updateSingleton } from "@/lib/collections.functions";
+import { getSingleton, updateSingleton } from "@/lib/collections";
 import { Button } from "@/components/ui/button";
 import { ArrowUp, ArrowDown, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
@@ -25,9 +24,7 @@ const ALL_SECTIONS: { key: string; label: string }[] = [
 
 function LayoutHomePage() {
   const qc = useQueryClient();
-  const fetchOne = useServerFn(getSingleton);
-  const save = useServerFn(updateSingleton);
-  const { data } = useQuery({ queryKey: ["singleton", "home_layout"], queryFn: () => fetchOne({ data: { name: "home_layout" } }) });
+  const { data } = useQuery({ queryKey: ["singleton", "home_layout"], queryFn: () => getSingleton("home_layout") });
   const [order, setOrder] = useState<string[]>([]);
 
   useEffect(() => { if (data) setOrder(((data as { sections?: string[] }).sections) ?? []); }, [data]);
@@ -43,7 +40,7 @@ function LayoutHomePage() {
 
   const onSave = async () => {
     try {
-      await save({ data: { name: "home_layout", values: { sections: order } } });
+      await updateSingleton({ name: "home_layout", values: { sections: order } });
       toast.success("Layout salvo.");
       qc.invalidateQueries({ queryKey: ["singleton", "home_layout"] });
     } catch (e) { toast.error((e as Error).message); }

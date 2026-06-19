@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getPageBySlug, updatePage } from "@/lib/cms.functions";
+import { getPageBySlug, updatePage } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,9 +16,7 @@ export const Route = createFileRoute("/_authenticated/admin/paginas/$slug")({
 function PageEditor() {
   const { slug } = Route.useParams();
   const qc = useQueryClient();
-  const fetchPage = useServerFn(getPageBySlug);
-  const save = useServerFn(updatePage);
-  const { data, isLoading } = useQuery({ queryKey: ["page", slug], queryFn: () => fetchPage({ data: { slug } }) });
+  const { data, isLoading } = useQuery({ queryKey: ["page", slug], queryFn: () => getPageBySlug(slug) });
 
   const [title, setTitle] = useState("");
   const [contentText, setContentText] = useState("{}");
@@ -46,7 +43,7 @@ function PageEditor() {
     setError(null);
     setSaving(true);
     try {
-      await save({ data: { slug, title, content: parsed as never } });
+      await updatePage({ slug, title, content: parsed as never });
       toast.success("Página salva.");
       qc.invalidateQueries({ queryKey: ["page", slug] });
       qc.invalidateQueries({ queryKey: ["pages"] });

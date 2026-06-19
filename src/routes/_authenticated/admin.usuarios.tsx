@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { listAdmins, grantAdminByEmail, revokeAdmin } from "@/lib/users.functions";
+import { listAdmins, grantAdminByEmail, revokeAdmin } from "@/lib/users";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Trash2 } from "lucide-react";
@@ -14,20 +13,17 @@ export const Route = createFileRoute("/_authenticated/admin/usuarios")({
 
 function UsersPage() {
   const qc = useQueryClient();
-  const fetchList = useServerFn(listAdmins);
-  const grant = useServerFn(grantAdminByEmail);
-  const revoke = useServerFn(revokeAdmin);
-  const { data } = useQuery({ queryKey: ["admins"], queryFn: () => fetchList() });
+  const { data } = useQuery({ queryKey: ["admins"], queryFn: () => listAdmins() });
   const [email, setEmail] = useState("");
 
   const add = async () => {
     if (!email.trim()) return;
-    try { await grant({ data: { email: email.trim() } }); setEmail(""); toast.success("Admin adicionado."); qc.invalidateQueries({ queryKey: ["admins"] }); }
+    try { await grantAdminByEmail({ email: email.trim() }); setEmail(""); toast.success("Admin adicionado."); qc.invalidateQueries({ queryKey: ["admins"] }); }
     catch (e) { toast.error((e as Error).message); }
   };
   const remove = async (id: string) => {
     if (!confirm("Remover este administrador?")) return;
-    try { await revoke({ data: { userId: id } }); toast.success("Removido."); qc.invalidateQueries({ queryKey: ["admins"] }); }
+    try { await revokeAdmin({ userId: id }); toast.success("Removido."); qc.invalidateQueries({ queryKey: ["admins"] }); }
     catch (e) { toast.error((e as Error).message); }
   };
 

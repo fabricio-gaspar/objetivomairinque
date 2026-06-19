@@ -1,5 +1,5 @@
-import { createServerFn } from "@tanstack/react-start";
-import { supabaseAdmin } from "@/integrations/supabase/client.server";
+// Client-side CMS público — usado por páginas públicas. Lê via anon (RLS permite SELECT público).
+import { supabase } from "@/integrations/supabase/client";
 
 export type PublicCmsData = {
   heroSlides: Array<{ id: string; title: string; subtitle: string; image_url: string; cta_label: string; cta_link: string }>;
@@ -15,20 +15,20 @@ export type PublicCmsData = {
   footer: Array<{ id: string; title: string; position: number; links: Array<{ id: string; label: string; link: string; external: boolean }> }>;
 };
 
-export const getPublicCms = createServerFn({ method: "GET" }).handler(async (): Promise<PublicCmsData> => {
+export async function getPublicCms(): Promise<PublicCmsData> {
   const [hero, segs, diffs, stats, accs, faqs, hist, bc, hl, menu, cols, links] = await Promise.all([
-    supabaseAdmin.from("hero_slides").select("*").eq("active", true).order("position"),
-    supabaseAdmin.from("segments").select("*").eq("active", true).order("position"),
-    supabaseAdmin.from("differentials").select("*").eq("active", true).order("position"),
-    supabaseAdmin.from("stats").select("*").eq("active", true).order("position"),
-    supabaseAdmin.from("accessories").select("*").eq("active", true).order("position"),
-    supabaseAdmin.from("faqs").select("*").eq("active", true).order("position"),
-    supabaseAdmin.from("history_events").select("*").eq("active", true).order("position"),
-    supabaseAdmin.from("big_counter").select("*").eq("id", 1).maybeSingle(),
-    supabaseAdmin.from("home_layout").select("sections").eq("id", 1).maybeSingle(),
-    supabaseAdmin.from("menu_items").select("*").eq("visible", true).order("position"),
-    supabaseAdmin.from("footer_columns").select("*").order("position"),
-    supabaseAdmin.from("footer_links").select("*").order("position"),
+    supabase.from("hero_slides").select("*").eq("active", true).order("position"),
+    supabase.from("segments").select("*").eq("active", true).order("position"),
+    supabase.from("differentials").select("*").eq("active", true).order("position"),
+    supabase.from("stats").select("*").eq("active", true).order("position"),
+    supabase.from("accessories").select("*").eq("active", true).order("position"),
+    supabase.from("faqs").select("*").eq("active", true).order("position"),
+    supabase.from("history_events").select("*").eq("active", true).order("position"),
+    supabase.from("big_counter").select("*").eq("id", 1).maybeSingle(),
+    supabase.from("home_layout").select("sections").eq("id", 1).maybeSingle(),
+    supabase.from("menu_items").select("*").eq("visible", true).order("position"),
+    supabase.from("footer_columns").select("*").order("position"),
+    supabase.from("footer_links").select("*").order("position"),
   ]);
 
   const footer = (cols.data ?? []).map((c) => ({
@@ -53,4 +53,4 @@ export const getPublicCms = createServerFn({ method: "GET" }).handler(async (): 
     menu: (menu.data ?? []) as PublicCmsData["menu"],
     footer,
   };
-});
+}

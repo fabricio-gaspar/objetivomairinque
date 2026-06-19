@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useServerFn } from "@tanstack/react-start";
-import { getSiteSettings, updateSiteSettings, type SiteSettings } from "@/lib/cms.functions";
+import { getSiteSettings, updateSiteSettings, type SiteSettings } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,9 +26,7 @@ const fields: { key: keyof SiteSettings; label: string; textarea?: boolean }[] =
 
 function ConfigPage() {
   const qc = useQueryClient();
-  const fetchSettings = useServerFn(getSiteSettings);
-  const save = useServerFn(updateSiteSettings);
-  const { data, isLoading } = useQuery({ queryKey: ["site-settings"], queryFn: () => fetchSettings() });
+  const { data, isLoading } = useQuery({ queryKey: ["site-settings"], queryFn: () => getSiteSettings() });
   const [form, setForm] = useState<SiteSettings | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -41,7 +38,7 @@ function ConfigPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      await save({ data: form });
+      await updateSiteSettings(form);
       toast.success("Configurações salvas.");
       qc.invalidateQueries({ queryKey: ["site-settings"] });
     } catch (err) {
