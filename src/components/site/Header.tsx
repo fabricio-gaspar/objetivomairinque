@@ -40,7 +40,7 @@ export function Header() {
                   <div key={item.label} className="group relative">
                     <button
                       data-active={active}
-                      className={`nav-link inline-flex items-center gap-1 text-sm font-medium transition-colors ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
+                      className={`nav-link inline-flex items-center gap-1 text-sm font-medium transition-colors whitespace-pre-line ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
                     >
                       {item.label} <ChevronDown className="h-3.5 w-3.5 transition-transform group-hover:rotate-180" />
                     </button>
@@ -65,7 +65,7 @@ export function Header() {
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="nav-link text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
+                    className="nav-link text-sm font-medium text-foreground/70 transition-colors hover:text-primary whitespace-pre-line"
                   >
                     {item.label}
                   </a>
@@ -77,7 +77,7 @@ export function Header() {
                   key={item.to}
                   to={item.to}
                   data-active={active}
-                  className={`nav-link text-sm font-medium transition-colors ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
+                  className={`nav-link text-sm font-medium transition-colors whitespace-pre-line ${active ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
                 >
                   {item.label}
                 </Link>
@@ -106,7 +106,7 @@ export function Header() {
                     <div key={item.label}>
                       <button
                         onClick={() => setOpenSub(isSubOpen ? null : item.label)}
-                        className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted"
+                        className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted whitespace-pre-line"
                       >
                         {item.label} <ChevronDown className={`h-4 w-4 transition-transform ${isSubOpen ? "rotate-180" : ""}`} />
                       </button>
@@ -135,7 +135,7 @@ export function Header() {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={() => setOpen(false)}
-                      className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted"
+                      className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted whitespace-pre-line"
                     >
                       {item.label}
                     </a>
@@ -146,7 +146,7 @@ export function Header() {
                     key={item.to}
                     to={item.to}
                     onClick={() => setOpen(false)}
-                    className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted"
+                    className="rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-muted whitespace-pre-line"
                   >
                     {item.label}
                   </Link>
