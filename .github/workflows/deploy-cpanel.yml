@@ -102,7 +102,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
           server-dir: /public_html/
-          protocol: ftps
+          protocol: ftp
           port: 21
           # Apaga TUDO em /public_html antes de subir, EXCETO os caminhos do exclude.
           # Assim nunca sobra arquivo antigo (incluindo saidas SSR de uploads anteriores).
