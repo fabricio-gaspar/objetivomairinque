@@ -81,8 +81,8 @@ export function Footer() {
               <li><Link to="/fundamental-1" className="hover:text-white">Fundamental I</Link></li>
               <li><Link to="/fundamental-2" className="hover:text-white">Fundamental II</Link></li>
               <li>
-                <a href={SITE.portalUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                  Portal do Aluno
+                <a href={SITE.portalUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white whitespace-pre-line">
+                  Portal do Aluno Teste\n\n
                 </a>
               </li>
             </ul>
