@@ -246,6 +246,8 @@ delete pkg.devDependencies?.["wrangler"];
 pkg.devDependencies = pkg.devDependencies || {};
 pkg.devDependencies["@vitejs/plugin-react-swc"] = pkg.devDependencies["@vitejs/plugin-react-swc"] || "^3.7.2";
 pkg.devDependencies["@tanstack/router-vite-plugin"] = pkg.devDependencies["@tanstack/router-vite-plugin"] || "^1.95.0";
+pkg.devDependencies["@tailwindcss/vite"] = pkg.devDependencies["@tailwindcss/vite"] || "^4.0.0";
+pkg.devDependencies["tailwindcss"] = pkg.devDependencies["tailwindcss"] || "^4.0.0";
 pkg.scripts = pkg.scripts || {};
 pkg.scripts.dev = "vite";
 pkg.scripts.build = "vite build";
