@@ -35,10 +35,14 @@ write("src/integrations/supabase/auth-middleware.ts", `export const requireSupab
 write("src/integrations/supabase/auth-attacher.ts", `export const attachSupabaseAuth = {} as any;\n`);
 write("src/integrations/supabase/client.server.ts", `export { supabase as supabaseAdmin } from "./client";\n`);
 
-console.log("→ Corrigindo src/styles.css (ordem dos @import para PostCSS)...");
+console.log("→ Corrigindo src/styles.css (Tailwind v4: remover source(none) para habilitar auto-scan)...");
 if (existsSync(p("src/styles.css"))) {
   let css = readFileSync(p("src/styles.css"), "utf8");
-  css = css.replace(/^\s*@source\s+["'][^"']+["'];\s*\n/m, "");
+  // Remove o modificador `source(none)` do @import "tailwindcss" para que o
+  // plugin escaneie automaticamente os arquivos do projeto e gere as utilitárias.
+  css = css.replace(/(@import\s+["']tailwindcss["'])\s+source\(none\)\s*;/g, "$1;");
+  // Remove a diretiva @source manual (auto-scan cobre src/ a partir do CSS).
+  css = css.replace(/^\s*@source\s+["'][^"']+["'];\s*\n/gm, "");
   writeFileSync(p("src/styles.css"), css);
 }
 
