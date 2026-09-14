@@ -17,11 +17,12 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate({ to: "/admin" });
-    });
+    }).catch(() => undefined);
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
       if (session) navigate({ to: "/admin" });
     });
@@ -30,23 +31,39 @@ function LoginPage() {
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setFormError("");
     setLoading(true);
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: { emailRedirectTo: `${window.location.origin}/admin` },
         });
         if (error) throw error;
-        toast.success("Conta criada. Você já pode entrar.");
+        toast.success(
+          data.session
+            ? "Conta criada. Você já pode entrar."
+            : "Conta criada. Verifique seu e-mail antes de entrar.",
+        );
         setMode("signin");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
     } catch (err) {
-      toast.error((err as Error).message);
+      const rawMessage = err instanceof Error ? err.message : "Não foi possível concluir a operação.";
+      const normalizedMessage = rawMessage.toLowerCase();
+      const message =
+        normalizedMessage.includes("failed to fetch") ||
+        normalizedMessage.includes("network") ||
+        normalizedMessage.includes("dns") ||
+        normalizedMessage.includes("host") ||
+        normalizedMessage.includes("connect")
+          ? "Não foi possível conectar ao serviço de autenticação. O Supabase deste site está indisponível."
+          : rawMessage;
+      setFormError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -73,6 +90,11 @@ function LoginPage() {
             {loading ? "Aguarde…" : mode === "signin" ? "Entrar" : "Criar conta"}
           </Button>
         </form>
+        {formError && (
+          <p role="alert" className="mt-3 text-sm text-destructive">
+            {formError}
+          </p>
+        )}
 
         <div className="mt-4 text-center text-sm text-muted-foreground">
           {mode === "signin" ? (
