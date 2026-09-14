@@ -2,6 +2,7 @@
 // Substitui src/lib/cms.functions.ts (server functions) para funcionar em hospedagem estática (cPanel).
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
+import { SITE } from "@/lib/site";
 
 export type SiteSettings = {
   name: string;
@@ -23,13 +24,19 @@ export type PageContent = {
 };
 
 function mapSettings(row: Record<string, unknown>): SiteSettings {
+  const usesLegacyContact =
+    row.phone === "(11) 4718-2255" ||
+    row.phone_raw === "+551147182255" ||
+    row.whatsapp === "5511970625449" ||
+    row.whatsapp_label === "(11) 97062-5449";
+
   return {
     name: row.name as string,
     shortName: row.short_name as string,
-    phone: row.phone as string,
-    phoneRaw: row.phone_raw as string,
-    whatsapp: row.whatsapp as string,
-    whatsappLabel: row.whatsapp_label as string,
+    phone: usesLegacyContact ? SITE.phone : (row.phone as string),
+    phoneRaw: usesLegacyContact ? SITE.phoneRaw : (row.phone_raw as string),
+    whatsapp: usesLegacyContact ? SITE.whatsapp : (row.whatsapp as string),
+    whatsappLabel: usesLegacyContact ? SITE.whatsappLabel : (row.whatsapp_label as string),
     email: row.email as string,
     address: row.address as string,
     portalUrl: row.portal_url as string,
