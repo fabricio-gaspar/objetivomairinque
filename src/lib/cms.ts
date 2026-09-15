@@ -24,19 +24,18 @@ export type PageContent = {
 };
 
 function mapSettings(row: Record<string, unknown>): SiteSettings {
-  const usesLegacyContact =
-    row.phone === "(11) 4718-2255" ||
-    row.phone_raw === "+551147182255" ||
-    row.whatsapp === "5511970625449" ||
-    row.whatsapp_label === "(11) 97062-5449";
+  const settingOrFallback = (value: unknown, legacyValue: string, fallback: string) => {
+    const normalized = typeof value === "string" ? value.trim() : "";
+    return !normalized || normalized === legacyValue ? fallback : normalized;
+  };
 
   return {
     name: row.name as string,
     shortName: row.short_name as string,
-    phone: usesLegacyContact ? SITE.phone : (row.phone as string),
-    phoneRaw: usesLegacyContact ? SITE.phoneRaw : (row.phone_raw as string),
-    whatsapp: usesLegacyContact ? SITE.whatsapp : (row.whatsapp as string),
-    whatsappLabel: usesLegacyContact ? SITE.whatsappLabel : (row.whatsapp_label as string),
+    phone: settingOrFallback(row.phone, "(11) 4718-2255", SITE.phone),
+    phoneRaw: settingOrFallback(row.phone_raw, "+551147182255", SITE.phoneRaw),
+    whatsapp: settingOrFallback(row.whatsapp, "5511970625449", SITE.whatsapp),
+    whatsappLabel: settingOrFallback(row.whatsapp_label, "(11) 97062-5449", SITE.whatsappLabel),
     email: row.email as string,
     address: row.address as string,
     portalUrl: row.portal_url as string,
@@ -57,7 +56,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
 }
 
 export async function updateSiteSettings(input: SiteSettings): Promise<{ ok: true }> {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("site_settings")
     .update({
       name: input.name,
@@ -71,8 +70,15 @@ export async function updateSiteSettings(input: SiteSettings): Promise<{ ok: tru
       portal_url: input.portalUrl,
       updated_at: new Date().toISOString(),
     })
-    .eq("id", 1);
+    .eq("id", 1)
+    .select("id")
+    .maybeSingle();
   if (error) throw new Error(error.message);
+  if (!data) {
+    throw new Error(
+      "Não foi possível salvar as configurações. Verifique se sua conta tem permissão de administrador.",
+    );
+  }
   return { ok: true };
 }
 
