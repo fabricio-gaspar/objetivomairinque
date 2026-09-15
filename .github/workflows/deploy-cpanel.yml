@@ -4,7 +4,7 @@ name: Deploy to cPanel
 # 1. Converte TanStack Start (SSR) -> SPA estatico
 # 2. Roda o build do Vite (gera ./dist)
 # 3. Verifica que o dist tem CSS+JS injetados (senao aborta)
-# 4. Limpa /public_html (preservando pastas do cPanel) e sobe SOMENTE o conteudo de dist/
+# 4. Sobe SOMENTE o conteudo de dist/ para a raiz da conta FTP, que deve apontar para /public_html
 
 on:
   push:
@@ -98,19 +98,20 @@ jobs:
             fi
           done
 
-      - name: Deploy via FTP para /public_html (limpa antes de subir)
+      - name: Deploy via FTP para a raiz da conta FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: /public_html/
+          server-dir: /
+          # A conta FTP usada aqui deve estar criada/apontada para /public_html no cPanel.
           protocol: ftp
           port: 21
-          # Apaga TUDO em /public_html antes de subir, EXCETO os caminhos do exclude.
-          # Assim nunca sobra arquivo antigo (incluindo saidas SSR de uploads anteriores).
-          dangerous-clean-slate: true
+          # A limpeza automática fica desativada para evitar apagar arquivos fora do diretório público.
+          # O index.html e os assets novos serão substituídos normalmente.
+          dangerous-clean-slate: false
           # Pastas/arquivos do cPanel que NUNCA devem ser apagados nem sobrescritos.
           exclude: |
             **/.git*
